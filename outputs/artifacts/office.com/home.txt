@@ -1,0 +1,297 @@
+en-GB
+[ ![](https://uhf.microsoft.com/images/microsoft/RE1Mu3b.png) ](https://www.microsoft.com)
+Microsoft 365 Copilot
+[ Microsoft 365 Copilot ](https://m365.cloud.microsoft/)
+Microsoft 365 Copilot 
+  * [ Home ](https://m365.cloud.microsoft/)
+  * Products
+    * For individuals For individuals
+      * [Pricing for individuals​](https://www.microsoft.com/en-gb/microsoft-365/buy/compare-all-microsoft-365-products)
+      * [For families](https://www.microsoft.com/en-gb/microsoft-365/p/microsoft-365-family/cfq7ttc0k5dm)
+      * [For single users](https://go.microsoft.com/fwlink/p/?LinkID=2281590)
+      * [For premium users](https://www.microsoft.com/en-gb/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q)
+      * [For students](https://www.microsoft.com/en-gb/education/students)
+      * [Learn more​](https://www.microsoft.com/en-gb/microsoft-365/explore-microsoft-365-for-home)
+    * For business For business
+      * [Pricing for business](https://www.microsoft.com/en-gb/microsoft-365/business/microsoft-365-plans-and-pricing)
+      * [For small business](https://www.microsoft.com/en-gb/microsoft-365/business)
+      * [For schools](https://www.microsoft.com/en-gb/education/products/microsoft-365)
+    * For enterprise For enterprise
+      * [Pricing for enterprise](https://www.microsoft.com/en-gb/microsoft-365/enterprise/microsoft-365-plans-and-pricing)
+      * [For enterprise](https://www.microsoft.com/en-gb/microsoft-365/microsoft-365-enterprise)
+      * [For frontline workers](https://www.microsoft.com/en-gb/microsoft-365/enterprise/frontline)
+      * [For nonprofits](https://www.microsoft.com/en-gb/microsoft-365/enterprise/nonprofit-plans-and-pricing)
+    * Microsoft 365 Copilot Microsoft 365 Copilot
+      * [Meet Copilot](https://www.microsoft.com/en-gb/microsoft-365-copilot)
+      * [Copilot Chat](https://www.microsoft.com/en-gb/microsoft-365-copilot/chat)
+      * [AI Agents](https://www.microsoft.com/en-gb/microsoft-365-copilot/agents)
+      * [Daily Prompt Guide](https://www.microsoft.com/en-gb/microsoft-365-copilot/learn-copilot-today)
+      * [Plans and pricing](https://www.microsoft.com/en-gb/microsoft-365-copilot/pricing)
+    * Apps and services Apps and services
+      * [Microsoft Teams](https://www.microsoft.com/en-gb/microsoft-teams/group-chat-software)
+      * [Word](https://www.microsoft.com/en-gb/microsoft-365/word)
+      * [Excel](https://www.microsoft.com/en-gb/microsoft-365/excel)
+      * [PowerPoint](https://www.microsoft.com/en-gb/microsoft-365/powerpoint)
+      * [Outlook](https://www.microsoft.com/en-gb/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook)
+      * [OneDrive](https://www.microsoft.com/en-gb/microsoft-365/onedrive/online-cloud-storage)
+      * [SharePoint](https://www.microsoft.com/en-gb/microsoft-365/sharepoint/collaboration)
+      * [Planner](https://www.microsoft.com/en-gb/microsoft-365/planner/microsoft-planner)
+      * [See all apps and services](https://www.microsoft.com/en-gb/microsoft-365/products-apps-services)
+    * Related products Related products
+      * [Microsoft Office](https://www.microsoft.com/en-gb/microsoft-365/microsoft-office)
+      * [Windows 365](https://www.microsoft.com/en-gb/windows-365)
+      * [Microsoft Viva](https://www.microsoft.com/en-gb/microsoft-viva)
+      * [Microsoft Edge](https://www.microsoft.com/en-gb/edge)
+      * [Microsoft Agent 365](https://www.microsoft.com/en-gb/microsoft-agent-365)
+  * Features
+    * [Create](https://m365.cloud.microsoft/create)
+    * [AI Image Generator](https://m365.cloud.microsoft/ai-image-generator)
+    * [AI Image Editor](https://m365.cloud.microsoft/ai-image-editor)
+    * [AI Chat](https://copilot.cloud.microsoft)
+    * [Agents](https://www.microsoft.com/en-us/microsoft-365-copilot/agents)
+  * [Prompts](https://m365.cloud.microsoft/copilot-prompts)
+  * Support
+    * For individuals For individuals
+      * [Self-help resources](https://support.microsoft.com/)
+      * [Billing support](https://go.microsoft.com/fwlink/?linkid=2267729)
+      * [Community](https://go.microsoft.com/fwlink/?linkid=2268025)
+      * [Contact Microsoft Support](https://support.microsoft.com/contactus)
+    * For work For work
+      * [Self-help resources](https://support.microsoft.com/)
+      * [Admin self-help](https://go.microsoft.com/fwlink/?linkid=2268124)
+      * [Support plans](https://www.microsoft.com/en-gb/microsoft-365/business/microsoft-365-for-business-support-options)
+      * [Find a partner](https://appsource.microsoft.com/en-gb/marketplace/partner-dir?filter=sort%3D0%3BpageSize%3D18%3BonlyThisCountry%3Dtrue%3Bcountry%3DGB%3Blocname%3DUnited%2520Kingdom%3BlocationNotRequired%3Dtrue)
+      * [Contact Sales](https://www.microsoft.com/en-gb/microsoft-365/business/sales-support)
+      * [Community](https://go.microsoft.com/fwlink/?linkid=2267923)
+    * For education For education
+      * [Self-help resources](https://go.microsoft.com/fwlink/?linkid=2268026)
+      * [Educator Center](https://go.microsoft.com/fwlink/?linkid=2267533)
+      * [Request support](https://aka.ms/edusupport)
+      * [Contact Microsoft Support](https://support.microsoft.com/contactus)
+      * [Community](https://go.microsoft.com/fwlink/?linkid=2267640)
+    * For partners For partners
+      * [Become a partner](https://partner.microsoft.com/en-gb/)
+      * [Partner resources](https://partner.microsoft.com/en-gb/)
+    * [See all support](https://www.microsoft.com/en-gb/microsoft-365/support)
+  * More
+  * [Buy Microsoft 365](https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products?=&activetab=tab:primaryr1&ocid=cmm9nmmzcxp)
+
+
+  * All Microsoft
+    *       * [Microsoft 365](https://www.microsoft.com/en-gb/microsoft-365)
+      * [Teams](https://www.microsoft.com/en-gb/microsoft-teams/group-chat-software)
+      * [Copilot](https://copilot.microsoft.com/)
+      * [Windows](https://www.microsoft.com/en-gb/windows/)
+      * [Surface](https://www.microsoft.com/surface)
+      * [Xbox](https://www.xbox.com/)
+      * [Deals](https://www.microsoft.com/en-gb/store/b/sale?icid=DSM_TopNavDeals)
+      * [Small Business](https://www.microsoft.com/en-gb/store/b/business)
+      * [Support](https://support.microsoft.com/en-gb)
+    * Software Software
+      * [Windows Apps](https://apps.microsoft.com/home)
+      * [AI](https://www.microsoft.com/en-gb/ai)
+      * [OneDrive](https://www.microsoft.com/en-gb/microsoft-365/onedrive/online-cloud-storage)
+      * [Outlook](https://www.microsoft.com/en-gb/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook)
+      * [Moving from Skype to Teams](https://support.microsoft.com/en-gb/office/moving-from-skype-to-microsoft-teams-free-3c0caa26-d9db-4179-bcb3-930ae2c87570?icid=DSM_All_Skype)
+      * [OneNote](https://www.microsoft.com/en-gb/microsoft-365/onenote/digital-note-taking-app)
+      * [Microsoft Teams](https://www.microsoft.com/en-gb/microsoft-teams/group-chat-software)
+    * PCs & Devices  PCs & Devices 
+      * [Shop Xbox](https://www.microsoft.com/en-gb/store/b/xbox?icid=CNavDevicesXbox)
+      * [Accessories](https://www.microsoft.com/en-gb/store/b/accessories?icid=CNavDevicesAccessories)
+      * [VR & mixed reality](https://www.microsoft.com/en-gb/store/b/virtualreality?icid=CNavVirtualReality)
+    * Entertainment Entertainment
+      * [Xbox Game Pass Ultimate](https://www.xbox.com/en-gb/games/store/xbox-game-pass-ultimate/cfq7ttc0khs0?icid=DSM_All_XboxGamePassUltimate)
+      * [Xbox games](https://www.microsoft.com/en-gb/store/top-paid/games/xbox)
+      * [PC games](https://apps.microsoft.com/games)
+    * Business Business
+      * [Microsoft Security](https://www.microsoft.com/en-gb/security)
+      * [Azure](https://azure.microsoft.com/en-gb/)
+      * [Dynamics 365](https://www.microsoft.com/en-gb/dynamics-365)
+      * [Microsoft 365 for business](https://www.microsoft.com/en-gb/microsoft-365/business)
+      * [Microsoft Industry](https://www.microsoft.com/en-gb/industry)
+      * [Microsoft Power Platform](https://www.microsoft.com/en-gb/power-platform)
+      * [Windows 365](https://www.microsoft.com/en-gb/windows-365)
+    * Developer & IT  Developer & IT 
+      * [Microsoft Developer](https://developer.microsoft.com/en-us/?icid=DSM_All_Developper)
+      * [Microsoft Learn](https://learn.microsoft.com/)
+      * [Support for AI marketplace apps](https://www.microsoft.com/software-development-companies/offers-benefits/isv-success?icid=DSM_All_SupportAIMarketplace&ocid=cmm3atxvn98)
+      * [Microsoft Tech Community](https://techcommunity.microsoft.com/)
+      * [Microsoft Marketplace](https://marketplace.microsoft.com?icid=DSM_All_Marketplace&ocid=cmm3atxvn98)
+      * [Visual Studio](https://visualstudio.microsoft.com/)
+      * [Marketplace Rewards](https://www.microsoft.com/software-development-companies/offers-benefits/marketplace-rewards?icid=DSM_All_MarketplaceRewards&ocid=cmm3atxvn98)
+    * Other Other
+      * [Microsoft Rewards ](https://www.microsoft.com/rewards)
+      * [Free downloads & security](https://www.microsoft.com/en-gb/download)
+      * [Education](https://www.microsoft.com/en-gb/education?icid=CNavMSCOML0_Studentsandeducation)
+      * [Gift cards](https://www.microsoft.com/en-gb/store/b/gift-cards)
+      * [Licensing](https://www.microsoft.com/licensing/)
+    * [View Sitemap](https://www.microsoft.com/en-gb/sitemap)
+
+
+[Sign in to your account](https://www.office.com/login?es=UnauthClick&ru=%2F%3Ffromcode%3Dcmmiadtp424%26origindomain%3DOffice&msafed=0)
+{"ariaCollectorUrl":"https://browser.pipe.aria.microsoft.com/Collector/3.0/","ariaTenant":"","buildDateUtc":"2026-01-13 13:30:26Z","buildId":"00000000-0000-0000-0000-000000000000","clientOTelMediumSchedulePriorityEnabled":false,"clientOTelHighSchedulePriorityEnabled":false,"clientOTelImmediateSchedulePriorityEnabled":true,"corpNet":false,"correlationId":"ee2d9aa2-90f2-41b6-9dc4-ba3cd3300db7","deploymentEnvironment":"prod","devEnvironment":"Cosmic","ecsRing":"Unknown","flights":"P-R-1088282-1-1,P-E-1233817-C1-3,P-R-1743408-2-5,P-R-1735020-2-8,P-R-1725766-2-7,P-R-1719972-2-7,P-R-1719318-2-16,P-R-1717842-2-11,P-R-1718225-10-15,P-R-1714095-2-11,P-R-1708585-2-15,P-R-1707287-2-15,P-R-1706322-14-23,P-R-1701669-2-8,P-R-1696067-4-8,P-R-1693815-2-8,P-R-1693497-2-27,P-R-1691946-C1-5,P-R-1681975-2-20,P-R-1673156-2-13,P-R-1666204-2-10,P-R-1661437-2-14,P-R-1664445-8-8,P-R-1661114-2-16,P-R-1657845-2-12,P-R-1653270-2-9,P-R-1646122-2-17,P-R-1643754-12-11,P-R-1641531-2-7,P-R-1641264-2-17,P-R-1635685-2-7,P-R-1635522-6-7,P-R-1628765-8-12,P-R-1614832-2-11,P-R-1602389-2-5,P-R-1594737-2-24,P-R-1591614-2-6,P-R-1564953-14-12,P-R-1564949-16-11,P-R-1563194-2-26,P-R-1542091-2-11,P-R-1538360-2-14,P-R-1535451-2-7,P-R-1533908-2-8,P-R-1530299-2-18,P-R-1521777-2-17,P-R-1480085-2-19,P-R-1480080-2-19,P-R-1480082-2-18,P-R-1477077-26-17,P-R-1477070-26-17,P-R-1475598-2-18,P-R-1413651-2-10,P-R-1451729-28-494,P-R-1447115-C1-3,P-R-1437042-2-3,P-R-1436423-2-4,P-R-1423602-2-3,P-R-1419953-2-6,P-R-1289757-2-12,P-R-1280087-2-12,P-R-1280080-2-12,P-R-1278825-2-7,P-R-1278365-2-6,P-R-1252138-2-7,P-R-1252095-2-6,P-R-1250616-2-7,P-R-1249378-2-6,P-R-1249360-2-6,P-R-1045844-2-9,P-R-1177635-2-8,P-R-1149643-2-12,P-R-1149440-2-3,P-R-1143229-2-11,P-R-1107151-8-22,P-R-1102110-34-4654,P-R-1099573-2-37,P-R-1099462-2-12,P-R-1094643-2-42,P-R-1071441-2-63,P-R-1050538-2-11,P-R-1049154-2-9,P-R-1035877-4-7,P-R-1034124-2-19,P-R-1018575-12-24,P-R-1004015-2-21,P-R-108797-2-7,P-R-106573-4-4,P-R-95756-2-11,P-R-93960-2-47,P-R-88009-6-9,P-D-1641923-1-2,P-D-1538669-4-24,P-D-1146262-1-28,P-D-1058394-2-8,P-D-1058392-1-8,P-D-1058393-1-42,P-D-1042850-1-62,P-D-116695-2-15,P-D-116687-1-9,P-D-98651-6-36,P-D-68024-5-262,P-R-1611617-2-123,P-R-1577847-2-71,P-R-1446552-2-2,P-D-1126378-1-5,P-R-1680265-1-7,P-R-1647295-1-10,P-R-1645528-1-6,P-R-1645527-1-6,P-R-1120745-1-44,P-R-1118122-1-8,P-R-1003190-1-4,P-R-87428-2-29,P-R-65317-1-4","geoName":"weu","domainOrigin":"Office","requestOrigin":"Direct","sessionId":"0543db11-1a13-4e54-aa0a-f4b43203e2a7","testTraffic":false,"cookieConsentRequired":false,"officeMarketLcid":2057,"useMruS2SFlow":false,"useFeedApi":true,"oTelAriaTenant":"eba120086311400a9b62c4718c0934d3-7ec73bd2-d8e8-450d-84d0-7f0a2ade31ce-7166","oTelAppName":"OfficeTaosHub","oTelAppPlatform":"Web","oTelClickEnabled":true,"oTelDiagnosticAriaTenant":"6dd53ce2cf7c4e9ca43c3702bdbf521a-0877f49d-9760-44f7-839a-5ece6d961731-6816","oTelDiagnosticEnabled":false,"oTelDiagnosticNameSpace":"Office.Taos.Hub.Diagnostic","oTelEnabled":true,"oTelErrorEnabled":true,"oTelEudbEndpointEnabled":false,"oTelFeatureEnabled":true,"oTelImpressionEnabled":true,"oTelNameSpace":"Office.Taos.Hub","oTelRequestEnabled":true,"oTelSamplingEnabled":false,"oTelSamplingPerformanceEnabled":false,"oTelSamplingRequestEnabled":false,"oTelPageViewEnabled":true,"oTelPerfEnabled":true,"oTelWin11DetectionEnabled":true,"pwaV2TokenEnabled":true,"embedNAAflowEnabled":false,"useMdcppAppId":false,"fromcode":"cmmiadtp424"}
+res.cdn.office.net/officehub
+{"diskPreloadEnabled":true,"enabled":true,"pilotFlights":[],"serviceWorkerAllowedFlights":[],"scriptUrl":"/sw","scope":"/"} 
+True
+#  Welcome to the Microsoft 365 Copilot app 
+The Microsoft 365 Copilot app (formerly Office) lets you create, share and collaborate all in one place with your favourite apps now including Copilot.* 
+[ Sign in ](https://www.office.com/login?es=UnauthClick&ru=%2f%3ffromcode%3dcmmiadtp424%26origindomain%3dOffice) [ Buy Microsoft 365 ](https://www.microsoft.com/microsoft-365/buy/compare-all-microsoft-365-products?tab=1&OCID=cmmruikv4ct)
+![](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/unauth-m365-hero-rocksteady-1c64e350bb.webp)
+![Microsoft 365 Logo](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/microsoft365-f34353bbbd.webp)
+[ See plans & pricing ](https://www.microsoft.com/en-GB/microsoft-365/business/compare-all-microsoft-365-business-products) [ Sign in ](https://www.office.com/login?es=UnauthClick&ru=%2f%3ffromcode%3dcmmiadtp424%26origindomain%3dOffice)
+![Microsoft 365 Logo](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/microsoft365-f34353bbbd.webp)
+[ Go premium ](https://www.microsoft.com/microsoft-365/buy/compare-all-microsoft-365-products?tab=1) [ Sign in ](https://www.office.com/login?es=UnauthClick&ru=%2f%3ffromcode%3dcmmiadtp424%26origindomain%3dOffice)
+![Microsoft 365 Logo](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/microsoft365-f34353bbbd.webp)
+[ Sign up ](https://www.microsoft.com/en-GB/microsoft-365/academic/compare-office-365-education-plans?activetab=tab:primaryr1) [ Sign in ](https://www.office.com/login?es=UnauthClick&ru=%2f%3ffromcode%3dcmmiadtp424%26origindomain%3dOffice)
+##  Unlock productivity, creativity, and  
+generative AI for your organisation. 
+The Microsoft 365 Copilot app empowers your employees to do   
+their best work with Copilot in the apps they use daily. 
+![Visual representation of the Microsoft 365 application ecosystem](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/m365-copilot-rocksteady-commercial-value-fe29b8430b.webp)
+###  Quick access to your AI assistant for work 
+Empower your organisation with Microsoft 365 Copilot Chat that supercharges productivity, sparks creativity, and keeps your data protected with enterprise data protection. 
+![Screenshots showing Copilot in web and mobile](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/rocksteady_commercial_highlight_5-c6008e4086.webp)
+###  Create anywhere, anytime, with any app 
+Anyone in your organisation can quickly create documents, presentations, and worksheets within a single, unified app experience. 
+![Create tiles demonstrating some of the free create possibilities with Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-commercial-1-mreb-8977dbd538.png)
+###  Your content  
+Your Microsoft 365 
+Microsoft 365 empowers your organisation to organise and safely store files in OneDrive with intuitive and easy organisational tools. 
+![Desktop and mobile app screenshots representing the organisational components of Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-commercial-2-mreb-8548b8b68d.png)
+###  Work together, better 
+Keep your business connected from anywhere with chat and cloud collaboration tools. 
+![Screenshots showing shared files between multiple users](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-commercial-3-mreb-40f76b47f6.png)
+###  Pick up where you left off 
+Microsoft 365 seamlessly tracks updates, tasks, and comments across all your files so you can pick up right where you left off. 
+![Screenshot showing recommended actions on recently updated files](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-commercial-4-mreb-708bcc570a.png)
+###  More apps in one place
+The Microsoft 365 Copilot app brings together your favourite apps and Copilot in one intuitive platform.
+![Puzzle illustration showing the interconnectedness of applications within Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/product-icons-316cfbf6de.webp)
+##  Free or premium:  
+Microsoft 365 has you covered 
+Find your favourite apps, your files, and your inspiration   
+with the Microsoft 365 Copilot app on the web. 
+![Tiles representing some of the free applications available with Microsoft 365 for free](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/m365-copilot-centric-value-consumer-0e10bf7b4f.png)
+###  Create anywhere, anytime, with any app 
+Quickly design anything for you and your family—birthday cards, school flyers, budgets, social posts, videos, and more—no graphic design experience needed. 
+![Create tiles demonstrating some of the free create possibilities with Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-consumer-1-mreb-7b89e7b9a1.png)
+###  Store with confidence 
+Your files and memories are secure in the cloud with 5GB of storage for free and 1TB with a paid Microsoft 365 subscription. 
+![Visual renderings demonstrating some of the content types that can be safely stored in Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-consumer-2-mreb-1858a1beb7.png)
+###  Find and share with friends... 
+...even if they don't have Microsoft 365. Seamlessly collaborate and create files with your friends and family. 
+![Visual representation of a family sharing content](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-consumer-3-mreb-eafc3935a3.png)
+###  Protect your personal data 
+Stay safer online with continuous monitoring for threats, cross-device alerts, tips, and expert guidance from Microsoft Defender.** 
+![Mobile and desktop screenshots of the Family Safety app helping families stay connected and safe](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-consumer-4-mreb-1b4c669383.png)
+###  More apps in one place
+The Microsoft 365 Copilot app brings together your favourite apps and Copilot in one intuitive platform.
+![Puzzle illustration showing the interconnectedness of applications within Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/product-icons-316cfbf6de.webp)
+##  Empower students and educators  
+to achieve more 
+Eligible educators and students get access to tools for learning anywhere  
+— in the classroom, remotely or in a hybrid environment — for free*** 
+![Visual representation of students and educators connected through Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/m365-rebrand-value-edu-mreb-7bf078a5f3.png)
+###  Create anywhere, anytime, with any app 
+Spark creativity and collaboration in any learning environment with a variety of Microsoft 365 apps and free templates to choose from. 
+![Create tiles demonstrating some of the free create possibilities with Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-edu-1-mreb-27f24f9cac.png)
+###  Empower your educators 
+Create equitable learning environments that help students develop knowledge with familiar apps essential to both academic and future career success. 
+![Screenshot depicting lesson plans and recorded class sessions within Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-edu-2-mreb-5eeec8e6f5.png)
+###  Accelerate learning 
+Explore learning tools to collaborate on projects together and independently, all in one place. 
+![Screenshots showing virtual collaboration features of Microsoft 365 for students and educators](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-edu-3-mreb-575eb26cf2.png)
+###  Enhance learning environments 
+Help your students connect and achieve more together, whether in the classroom, at home, or around the globe online with collaborative tools. 
+![Visual representation showing multiple collaboration options for students to work together](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/highlight-edu-4-mreb-86723a74cc.png)
+###  Simple and secure in one place
+The Microsoft 365 Copilot app brings together your favourite apps in one intuitive platform that keeps your data secure with enterprise data protection.
+![Puzzle illustration showing the interconnectedness of applications within Microsoft 365](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/product-icons-316cfbf6de.webp)
+##  Get the Microsoft 365 Copilot mobile app 
+![Download the free Microsoft 365 mobile app](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/store-buttons-747d2c674f.png) ![QR code that takes you to your mobile app store](https://res.cdn.office.net/officehub/images/content/images/unauth-refresh/qr-code-2be9b68eed.png)
+[*] Copilot Chat in the Microsoft 365 Copilot app is available for Microsoft 365 Enterprise, Academic, SMB, Personal and Family subscribers with a work, education, or personal account. It is available in these supported languages: [https://support.microsoft.com/en-us/office/supported-languages](https://support.microsoft.com/en-us/office/supported-languages-for-microsoft-365-copilot-94518d61-644b-4118-9492-617eea4801d8). 
+[**] Microsoft 365 Personal or Family subscription required.
+[***] Copilot with enterprise data protection is available to all faculty and higher education students ages 18+ who are signed in with their school account, including users of our free offers.
+[*] Copilot in the Microsoft 365 Copilot app is available for Microsoft 365 Enterprise, Academic, and SMB subscribers with a work or education account. Microsoft 365 Personal and Family subscribers and free accounts can access Copilot at copilot.microsoft.com and on the Copilot mobile app
+[**] Microsoft 365 Personal or Family subscription required.
+[*] Copilot in the Microsoft 365 Copilot app is available for Microsoft 365 Enterprise, Academic, and SMB subscribers with a work or education account. Microsoft 365 Personal and Family subscribers and free accounts can access Copilot at copilot.microsoft.com and on the Copilot mobile app
+[**] Microsoft 365 Personal or Family subscription required.
+[***] Eligible institutions can sign up for Office 365 Education for the classroom at no cost, including online Word, Excel, PowerPoint, OneNote, Microsoft Teams, Microsoft Copilot, plus additional classroom tools. Copilot with enterprise data protection is available to all faculty and higher education students 18+ while signed in with their school account.
+## Follow Microsoft 365
+[ ![](https://res.cdn.office.net/officehub/images/content/images/linkedin-refresh-02734a460c.png) ](https://www.linkedin.com/company/3509299 "Linkedin") [ ![](https://res.cdn.office.net/officehub/images/content/images/facebook-refresh-090a700c0f.png) ](https://go.microsoft.com/fwlink/p/?LinkID=506743 "Facebook") [ ![](https://res.cdn.office.net/officehub/images/content/images/x-refresh-233aa32c49.png) ](https://x.com/Microsoft365 "X") [ ![](https://res.cdn.office.net/officehub/images/content/images/instagram-refresh-5d315a943e.png) ](https://go.microsoft.com/fwlink/p/?LinkId=524828 "Instagram") [ ![](https://res.cdn.office.net/officehub/images/content/images/blog-33305b0d90.png) ](https://go.microsoft.com/fwlink/p/?LinkID=506712 "Office blogs")
+What's new
+  * [Surface Pro](https://www.microsoft.com/surface/devices/surface-pro)
+  * [Surface Laptop](https://www.microsoft.com/surface/devices/surface-laptop)
+  * [Surface Laptop Studio 2](https://www.microsoft.com/en-gb/d/Surface-Laptop-Studio-2/8rqr54krf1dZ)
+  * [Copilot for organisations](https://www.microsoft.com/en-gb/microsoft-copilot/organizations?icid=DSM_Footer_CopilotOrganizations)
+  * [Copilot for personal use](https://www.microsoft.com/en-gb/microsoft-copilot/for-individuals?form=MY02PT&OCID=GE_web_Copilot_Free_868g3t5nj)
+  * [AI in Windows](https://www.microsoft.com/en-gb/windows/ai-features?icid=DSM_Footer_WhatsNew_AIinWindows)
+  * [Explore Microsoft products](https://www.microsoft.com/en-gb/microsoft-products-and-apps)
+  * [Windows 11 apps](https://www.microsoft.com/en-gb/windows/apps-for-windows?icid=DSM_Footer_WhatsNew_Windows11apps)
+
+
+Microsoft Store
+  * [Account profile](https://account.microsoft.com/)
+  * [Download Center](https://www.microsoft.com/en-gb/download)
+  * [Microsoft Store Support](https://go.microsoft.com/fwlink/?linkid=2139749)
+  * [Returns](https://go.microsoft.com/fwlink/p/?LinkID=824764&clcid=0x809)
+  * [Order tracking](https://www.microsoft.com/en-gb/store/b/order-tracking)
+  * [Recycling](https://www.microsoft.com/en-gb/store/b/recycling?icid=GlobalFooterNav)
+  * [Microsoft Store Promise](https://www.microsoft.com/en-gb/store/b/why-microsoft-store?icid=footer_why-msft-store_7102020)
+
+
+Education
+  * [Microsoft in education](https://www.microsoft.com/en-gb/education)
+  * [Devices for education](https://www.microsoft.com/en-gb/education/devices/overview)
+  * [Microsoft Teams for Education](https://www.microsoft.com/en-gb/education/products/teams)
+  * [Microsoft 365 Education](https://www.microsoft.com/en-gb/education/products/microsoft-365)
+  * [Office Education](https://www.microsoft.com/en-gb/education/products/office)
+  * [Educator training and development](https://education.microsoft.com/)
+  * [Deals for students and parents](https://www.microsoft.com/en-gb/store/b/student)
+  * [Azure for students](https://azure.microsoft.com/en-gb/free/students/)
+
+
+Business
+  * [Microsoft Security](https://www.microsoft.com/en-gb/security)
+  * [Azure](https://azure.microsoft.com/en-gb/)
+  * [Dynamics 365](https://www.microsoft.com/en-gb/dynamics-365)
+  * [Microsoft 365](https://www.microsoft.com/en-gb/microsoft-365/business)
+  * [Microsoft 365 Copilot](https://www.microsoft.com/en-gb/microsoft-365-copilot?icid=DSM_Footer_Microsoft365Copilot)
+  * [Microsoft Teams](https://www.microsoft.com/en-gb/microsoft-teams/group-chat-software)
+  * [Small Business](https://www.microsoft.com/en-gb/store/b/business)
+
+
+Developer & IT
+  * [Microsoft Developer](https://developer.microsoft.com/en-us/?icid=DSM_Footer_Developer_Developer)
+  * [Microsoft Learn](https://learn.microsoft.com/)
+  * [Support for AI marketplace apps](https://www.microsoft.com/software-development-companies/offers-benefits/isv-success?icid=DSM_Footer_SupportAIMarketplace&ocid=cmm3atxvn98)
+  * [Microsoft Tech Community](https://techcommunity.microsoft.com/)
+  * [Microsoft Marketplace](https://marketplace.microsoft.com?icid=DSM_Footer_Marketplace&ocid=cmm3atxvn98)
+  * [Microsoft Power Platform](https://www.microsoft.com/en-gb/power-platform)
+  * [Marketplace Rewards](https://www.microsoft.com/software-development-companies/offers-benefits/marketplace-rewards?icid=DSM_Footer_MarketplaceRewards&ocid=cmm3atxvn98)
+  * [Visual Studio](https://visualstudio.microsoft.com/)
+
+
+Company
+  * [Careers](https://careers.microsoft.com/)
+  * [About Microsoft](https://www.microsoft.com/about)
+  * [Company news](https://ukstories.microsoft.com/?icid=DSM_Footer_Company_CompanyNews)
+  * [Privacy at Microsoft](https://www.microsoft.com/en-gb/privacy?icid=DSM_Footer_Company_Privacy)
+  * [Investors](https://www.microsoft.com/investor/default.aspx)
+  * [Sustainability](https://www.microsoft.com/en-gb/store/b/shop-sustainably?icid=MSCOM-UHF-Footer-Store-Sustainability)
+
+
+[English (United Kingdom)](https://store.office.com/worldwide.aspx?rs=en-gb&returnURL=https%3a%2f%2fwww.office.com%2f&cmapid=2) [ Your Privacy Choices Opt-Out Icon Your Privacy Choices ](https://aka.ms/yourcaliforniaprivacychoices) [ Consumer Health Privacy ](https://go.microsoft.com/fwlink/?linkid=2259814)
+  * [Contact Microsoft](https://support.microsoft.com/contactus)
+  * [Privacy](https://go.microsoft.com/fwlink/?LinkId=521839)
+  * [Manage cookies](https://www.office.com/)
+  * [Terms of use](https://go.microsoft.com/fwlink/?LinkID=206977)
+  * [Trademarks](https://go.microsoft.com/fwlink/?linkid=2196228)
+  * [About our ads](https://choice.microsoft.com/)
+  * [EU Compliance DoCs](https://www.microsoft.com/en-ie/eucompliancedoc/default.aspx)
+  * [Regulatory reporting](https://www.microsoft.com/en-gb/about/regulatory-reporting/)
+  * © Microsoft 2026
+
+
+SID:0543db11-1a13-4e54-aa0a-f4b43203e2a7 CID:ee2d9aa2-90f2-41b6-9dc4-ba3cd3300db7 AUTH:Unknown GEO:weu IN:Unknown DEP:1.0.03294.220 FLT:P-R-1088282-1-1,P-E-1233817-C1-3,P-R-1743408-2-5,P-R-1735020-2-8,P-R-1725766-2-7,P-R-1719972-2-7,P-R-1719318-2-16,P-R-1717842-2-11,P-R-1718225-10-15,P-R-1714095-2-11,P-R-1708585-2-15,P-R-1707287-2-15,P-R-1706322-14-23,P-R-1701669-2-8,P-R-1696067-4-8,P-R-1693815-2-8,P-R-1693497-2-27,P-R-1691946-C1-5,P-R-1681975-2-20,P-R-1673156-2-13,P-R-1666204-2-10,P-R-1661437-2-14,P-R-1664445-8-8,P-R-1661114-2-16,P-R-1657845-2-12,P-R-1653270-2-9,P-R-1646122-2-17,P-R-1643754-12-11,P-R-1641531-2-7,P-R-1641264-2-17,P-R-1635685-2-7,P-R-1635522-6-7,P-R-1628765-8-12,P-R-1614832-2-11,P-R-1602389-2-5,P-R-1594737-2-24,P-R-1591614-2-6,P-R-1564953-14-12,P-R-1564949-16-11,P-R-1563194-2-26,P-R-1542091-2-11,P-R-1538360-2-14,P-R-1535451-2-7,P-R-1533908-2-8,P-R-1530299-2-18,P-R-1521777-2-17,P-R-1480085-2-19,P-R-1480080-2-19,P-R-1480082-2-18,P-R-1477077-26-17,P-R-1477070-26-17,P-R-1475598-2-18,P-R-1413651-2-10,P-R-1451729-28-494,P-R-1447115-C1-3,P-R-1437042-2-3,P-R-1436423-2-4,P-R-1423602-2-3,P-R-1419953-2-6,P-R-1289757-2-12,P-R-1280087-2-12,P-R-1280080-2-12,P-R-1278825-2-7,P-R-1278365-2-6,P-R-1252138-2-7,P-R-1252095-2-6,P-R-1250616-2-7,P-R-1249378-2-6,P-R-1249360-2-6,P-R-1045844-2-9,P-R-1177635-2-8,P-R-1149643-2-12,P-R-1149440-2-3,P-R-1143229-2-11,P-R-1107151-8-22,P-R-1102110-34-4654,P-R-1099573-2-37,P-R-1099462-2-12,P-R-1094643-2-42,P-R-1071441-2-63,P-R-1050538-2-11,P-R-1049154-2-9,P-R-1035877-4-7,P-R-1034124-2-19,P-R-1018575-12-24,P-R-1004015-2-21,P-R-108797-2-7,P-R-106573-4-4,P-R-95756-2-11,P-R-93960-2-47,P-R-88009-6-9,P-D-1641923-1-2,P-D-1538669-4-24,P-D-1146262-1-28,P-D-1058394-2-8,P-D-1058392-1-8,P-D-1058393-1-42,P-D-1042850-1-62,P-D-116695-2-15,P-D-116687-1-9,P-D-98651-6-36,P-D-68024-5-262,P-R-1611617-2-123,P-R-1577847-2-71,P-R-1446552-2-2,P-D-1126378-1-5,P-R-1680265-1-7,P-R-1647295-1-10,P-R-1645528-1-6,P-R-1645527-1-6,P-R-1120745-1-44,P-R-1118122-1-8,P-R-1003190-1-4,P-R-87428-2-29,P-R-65317-1-4 FTR: R:Unknown PLT:Unknown FR:Unknown FD: Unknown D:2026-01-13 13:30:26Z ECS Ring: Unknown
+This site runs Microsoft Clarity for behavioural insights. By using this site, you consent to the collection and use of your data, such as how you interact with this website, by Microsoft for product improvements. Learn more [**here**](https://clarity.microsoft.com/) and at our [**Privacy Statement**](https://privacy.microsoft.com/privacystatement). 

@@ -1,0 +1,108 @@
+{
+  "site_etld1": "office.com",
+  "candidates_top": [
+    {
+      "url": "https://store.office.com/worldwide.aspx?rs=en-gb&returnURL=https%3a%2f%2fwww.office.com%2f&cmapid=2",
+      "anchor_text": "English (United Kingdom)",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "office.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/en-gb/education/products/office",
+      "anchor_text": "Office Education",
+      "score": -0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": false
+    },
+    {
+      "url": "https://www.microsoft.com/en-gb/microsoft-365/microsoft-office",
+      "anchor_text": "Microsoft Office",
+      "score": -0.8,
+      "source": "body",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": false
+    },
+    {
+      "url": "https://support.microsoft.com/en-gb/office/moving-from-skype-to-microsoft-teams-free-3c0caa26-d9db-4179-bcb3-930ae2c87570?icid=DSM_All_Skype",
+      "anchor_text": "Moving from Skype to Teams",
+      "score": -0.8,
+      "source": "body",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": false
+    },
+    {
+      "url": "https://www.microsoft.com/en-GB/microsoft-365/academic/compare-office-365-education-plans?activetab=tab:primaryr1",
+      "anchor_text": "Sign up",
+      "score": -0.8,
+      "source": "body",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": false
+    },
+    {
+      "url": "https://support.microsoft.com/en-us/office/supported-languages-for-microsoft-365-copilot-94518d61-644b-4118-9492-617eea4801d8",
+      "anchor_text": "https://support.microsoft.com/en-us/office/supported-languages",
+      "score": -0.8,
+      "source": "body",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": false
+    },
+    {
+      "url": "https://www.office.com/login?es=UnauthClick&ru=%2F%3Ffromcode%3Dcmmiadtp424%26origindomain%3DOffice&msafed=0",
+      "anchor_text": "Sign in to your account",
+      "score": -1.2,
+      "source": "body",
+      "candidate_etld1": "office.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.office.com/login?es=UnauthClick&ru=%2f%3ffromcode%3dcmmiadtp424%26origindomain%3dOffice",
+      "anchor_text": "Sign in",
+      "score": -1.2,
+      "source": "body",
+      "candidate_etld1": "office.com",
+      "is_same_site": true
+    }
+  ],
+  "tried": [
+    {
+      "url": "https://store.office.com/worldwide.aspx?rs=en-gb&returnURL=https%3a%2f%2fwww.office.com%2f&cmapid=2",
+      "anchor_text": "English (United Kingdom)",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "office.com",
+      "is_same_site": true,
+      "fetch_success": true,
+      "status_code": 200,
+      "error_message": "",
+      "text_len": 13303,
+      "likeliness_score": 2.8725
+    },
+    {
+      "url": "https://www.microsoft.com/en-gb/education/products/office",
+      "anchor_text": "Office Education",
+      "score": -0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": false,
+      "fetch_success": true,
+      "status_code": 200,
+      "error_message": "",
+      "text_len": 25770,
+      "likeliness_score": 6.67
+    }
+  ],
+  "chosen": {
+    "url": "https://www.microsoft.com/en-gb/education/products/office",
+    "anchor_text": "Office Education",
+    "score": -0.8,
+    "source": "footer",
+    "candidate_etld1": "microsoft.com",
+    "is_same_site": false,
+    "status_code": 200,
+    "text_len": 25770,
+    "likeliness_score": 6.67
+  }
+}

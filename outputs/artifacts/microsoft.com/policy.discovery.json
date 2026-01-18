@@ -1,0 +1,231 @@
+{
+  "site_etld1": "microsoft.com",
+  "candidates_top": [
+    {
+      "url": "https://go.microsoft.com/fwlink/?linkid=2259814",
+      "anchor_text": "Confidentialité de l’intégrité des consommateurs",
+      "score": 4.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://go.microsoft.com/fwlink/?LinkId=521839",
+      "anchor_text": "Confidentialité",
+      "score": 4.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/microsoft-copilot/organizations?icid=DSM_Footer_CopilotOrganizations",
+      "anchor_text": "Copilot pour les organisations",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/microsoft-copilot/for-individuals?form=MY02PT&OCID=GE_web_Copilot_Free_868g3t5nj",
+      "anchor_text": "Copilot pour une utilisation personnelle",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/microsoft-365",
+      "anchor_text": "Microsoft 365",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr-ma/download",
+      "anchor_text": "Centre de téléchargement",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://go.microsoft.com/fwlink/p/?LinkID=824764&clcid=0x380C",
+      "anchor_text": "Retours",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://support.microsoft.com/fr-ma",
+      "anchor_text": "Support",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/education",
+      "anchor_text": "Microsoft Éducation",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/education/devices/overview",
+      "anchor_text": "Appareils pour l’enseignement",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/education/products/teams",
+      "anchor_text": "Microsoft Teams pour l’éducation",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/education/products/microsoft-365",
+      "anchor_text": "Microsoft 365 Éducation",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/education/products/office",
+      "anchor_text": "Office Éducation",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://education.microsoft.com/",
+      "anchor_text": "Formation et développement des enseignants",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/en-us/store/b/education",
+      "anchor_text": "Offres pour étudiants et parents",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://azure.microsoft.com/free/students/",
+      "anchor_text": "Azure pour les étudiants",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/security",
+      "anchor_text": "Sécurité Microsoft",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://azure.microsoft.com/",
+      "anchor_text": "Azure",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/dynamics-365",
+      "anchor_text": "Dynamics 365",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/microsoft-365/business",
+      "anchor_text": "Microsoft 365",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://about.ads.microsoft.com/fr?icid=DSM_Footer_Business_MicrosoftAdvertising",
+      "anchor_text": "Microsoft Advertising",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/microsoft-365-copilot?icid=DSM_Footer_Microsoft365Copilot",
+      "anchor_text": "Microsoft 365 Copilot",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://www.microsoft.com/fr/microsoft-teams/group-chat-software",
+      "anchor_text": "Microsoft Teams",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://developer.microsoft.com/fr-fr/?icid=DSM_Footer_Developer_Developer",
+      "anchor_text": "Développeur Microsoft",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://learn.microsoft.com/",
+      "anchor_text": "Microsoft Learn",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    }
+  ],
+  "tried": [
+    {
+      "url": "https://go.microsoft.com/fwlink/?linkid=2259814",
+      "anchor_text": "Confidentialité de l’intégrité des consommateurs",
+      "score": 4.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true,
+      "fetch_success": true,
+      "status_code": 302,
+      "error_message": "",
+      "text_len": 18581,
+      "likeliness_score": 6.727499999999999
+    }
+  ],
+  "chosen": {
+    "url": "https://go.microsoft.com/fwlink/?linkid=2259814",
+    "anchor_text": "Confidentialité de l’intégrité des consommateurs",
+    "score": 4.8,
+    "source": "footer",
+    "candidate_etld1": "microsoft.com",
+    "is_same_site": true,
+    "status_code": 302,
+    "text_len": 18581,
+    "likeliness_score": 6.727499999999999
+  }
+}

@@ -1,0 +1,75 @@
+[ ![Adobe, Inc.](https://www.adobe.com/federal/assets/svgs/adobe-logo.svg) ](https://www.adobe.com/)
+About Adobe 
+[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)
+[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)
+[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)
+[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)[ ](https://www.adobe.com/privacy/experience-cloud.html)
+  *   *   *   * 
+
+[Adobe Privacy Center](https://www.adobe.com/privacy.html)
+[Adobe Privacy Policy](https://www.adobe.com/privacy/policy.html)
+[Cookies](https://www.adobe.com/privacy/cookies.html)
+[GDPR](https://www.adobe.com/privacy/general-data-protection-regulation.html)
+[CCPA](https://www.adobe.com/privacy/ccpa.html)
+[Law Enforcement](https://www.adobe.com/legal/lawenforcementrequests.html)
+[Younger Users](https://www.adobe.com/privacy/policy_youngerusers.html)
+[Contact Us](https://www.adobe.com/privacy/privacy-contact.html)
+[Your Privacy Choices](https://www.adobe.com/privacy/opt-out.html)
+  * [Home](https://www.adobe.com/)
+  * /[Adobe Privacy Center](https://www.adobe.com/privacy.html)
+  * /Adobe Experience Cloud privacy
+
+
+Adobe Privacy Center
+[Overview](https://www.adobe.com/privacy.html)
+[Adobe Privacy Policy](https://www.adobe.com/privacy/policy.html)
+[Cookies](https://www.adobe.com/privacy/cookies.html)
+[GDPR](https://www.adobe.com/privacy/general-data-protection-regulation.html)
+[CCPA](https://www.adobe.com/privacy/ccpa.html)
+[Law Enforcement](https://www.adobe.com/legal/lawenforcementrequests.html)
+[Younger Users](https://www.adobe.com/privacy/policy_youngerusers.html)
+[Contact Us](https://www.adobe.com/privacy/privacy-contact.html)
+[Your Privacy Choices](https://www.adobe.com/privacy/opt-out.html)
+[.](https://www.adobe.com/privacy/experience-cloud.html)
+# Adobe Experience Cloud - Privacy Information
+Last updated: June 3, 2025
+This webpage provides you, as a consumer, with information about how Adobe Experience Cloud solutions process information, which could include personal information, based on the choices made by our customers who use these solutions.
+Adobe’s business customers use Adobe Experience Cloud solutions to support their marketing and advertising efforts. These solutions enable our business customers to build, personalize, and improve the performance of their websites and apps by collecting and analyzing information, such as clicks made by visitors on their websites, apps, and social media pages.
+For Adobe Experience Cloud solutions, Adobe acts as a service provider and a data processor to our business customers. That means that we provide the technical tools to our customers to collect and process information, but they retain full control and responsibility over how that information is processed. If you have specific questions about how a business customer processes information using Adobe Experience Cloud solutions, please contact that business directly or refer to the business’s privacy policy.
+##  What information is collected by Adobe Experience Cloud business customers? 
+When an Adobe business customer uses Adobe Experience Cloud solutions, that business customer controls how they use the solutions, including what information to collect and send to Adobe Experience Cloud. The information a business collects and stores with Adobe Experience Cloud is determined by the products it licenses from Adobe and how it chooses to implement Adobe solutions. Below are some examples (but not an exhaustive list) of the types of information that our business customers may store and process with Adobe Experience Cloud:
+  * Your browsing activity on the company’s website
+  * Information about how you use the company’s apps
+  * Information about your web browser and device, such as browser type and device type
+  * Your IP address (or partial IP address, depending on how the company has configured the solution), which may be used to approximate your general location, as well as location information from your mobile device or web browser
+  * Information you may provide on that company's website, app, or when interacting with that company’s social media pages, such as information you provide on registration forms
+  * Ad campaign success rates, such as whether you clicked on a company's ad and whether viewing or clicking on the ad led to your purchase of that company's product or service
+  * Items you've purchased or placed in your shopping cart on that company's website or app
+
+
+Adobe’s business customers may utilize artificial intelligence or machine learning technologies available in the Adobe Experience Cloud solutions to automate the processing of certain data elements in their use of our solutions.
+##  How do business customers use Adobe Experience Cloud to collect or process information about you? 
+**Cookies and Similar Technologies**. Adobe Experience Cloud solutions provide cookies and similar technologies to enable our business customers to collect information. If you look at your cookie settings in your browser, you may notice cookies being used by business customers that have names associated with Adobe-owned domains.
+**Mobile**. An Adobe business customer may also use Adobe Experience Cloud solutions within its mobile apps. These technologies allow the company to collect and send information to its Adobe Experience Cloud account -- for example, advertising identifiers such as MAIDs, information on how you use the company’s mobile apps, and other information your mobile device may make available to apps, such as location information.
+**Other Sources of Information**. Customers may collect information via non-Adobe tools and send this information to Adobe. For example, when you interact with a company through its social media pages, information related to your interactions may be sent to the company’s Adobe Experience Cloud account. Customers may have other information that they have collected that they choose to send to their Adobe Experience Cloud account. In many cases, the company collecting that information will offer you choices about the information they collect. Most social media sites allow you to configure your settings regarding how your personal information is used.
+##  What privacy choices do you have about a business customer’s use of Adobe Experience Cloud solutions? 
+First, you may make choices directly with customers who are using Adobe’s Experience Cloud solutions. Adobe contractually requires its business customers to provide privacy policies describing:
+  * Their privacy practices in connection with personal information they may collect and store with Adobe Experience Cloud solutions
+  * How you can set your preferences for the use of such information
+
+
+In addition to setting preferences directly with the company processing your information, you may also exercise opt-outs with Adobe for two products (Adobe Audience Manager and Adobe Advertising) by visiting Adobe’s [Your Privacy Choices](https://www.adobe.com/privacy/opt-out.html) page and clicking on the button “Choices Available to Consumers of Businesses using Adobe Experience Cloud Solutions.”
+Adobe participates as a Vendor in the IAB Europe Transparency & Consent Framework and complies with its Specifications and Policies for certain Adobe Experience Cloud products. Adobe’s identification numbers within the Framework are: Adobe Advertising Cloud: GVL ID 264 and Adobe Audience Manager, Adobe Experience Platform: GVL ID 565.
+##  How long is information collected on behalf of business customers using Adobe Experience Cloud solutions retained? 
+The business customers who use Adobe Experience Cloud solutions determine how long information collected with these solutions are retained. At the choice of the customer, Adobe will delete or return to the customer such information at the end of the relevant contract term.
+العربيةEnglish
+### موقع Adobe هذا لا يتطابق مع موقعك
+بناءً على موقعك، نعتقد أنك قد تفضل موقع الويب لدولة الشرق الأوسط وشمال أفريقيا، حيث سيُعرض عليك المحتوى والعروض والأسعار الإقليمية.
+[![الشرق الأوسط وشمال أفريقيا](https://www.adobe.com/libs/features/georoutingv2/img/globe-grid.png)![](https://www.adobe.com/libs/ui/img/chevron.svg)الشرق الأوسط وشمال أفريقيا](https://www.adobe.com/privacy/experience-cloud.html)[United States](https://www.adobe.com/privacy/experience-cloud.html)
+tab
+العربية
+### This Adobe site doesn't match your location
+Based on your location, we think you may prefer the Middle East and North Africa website, where you'll get regional content, offerings, and pricing.
+[![Middle East and North Africa](https://www.adobe.com/libs/features/georoutingv2/img/globe-grid.png)![](https://www.adobe.com/libs/ui/img/chevron.svg)Middle East and North Africa](https://www.adobe.com/privacy/experience-cloud.html)[United States](https://www.adobe.com/privacy/experience-cloud.html)
+tab
+English

@@ -1,0 +1,121 @@
+Metadata-Version: 2.4
+Name: privacy-research-dataset
+Version: 0.1.0
+Summary: Research-grade Step-1 dataset builder: websites -> privacy policies + observed third-party tools + third-party policy texts (via Tracker Radar).
+Author: Research Class Project
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: crawl4ai>=0.7.0
+Requires-Dist: tranco>=0.8.0
+Requires-Dist: tldextract>=5.1.0
+Requires-Dist: beautifulsoup4>=4.12.3
+Requires-Dist: lxml>=5.2.2
+Requires-Dist: requests>=2.31.0
+Requires-Dist: tqdm>=4.66.4
+Requires-Dist: python-dateutil>=2.9.0.post0
+Provides-Extra: openwpm
+Dynamic: license-file
+
+# Privacy Research Dataset (Step 1)
+
+This project builds a **Step-1 research dataset**:
+
+- **Website → First-party privacy policy** (URL + extracted text)
+- **Website → Observed third-party tools** (domains from network requests)
+- **Third-party domain → Entity/category/policy URL (DuckDuckGo Tracker Radar)**
+- **Third-party policy URL → Extracted policy text** (best-effort)
+
+**No LLMs / DeepSeek.** Everything is deterministic + heuristic filtering.
+
+## Why these components
+
+- **Tranco**: reproducible Top-N website ranking snapshots (research-friendly).
+- **Crawl4AI**: JS-rendered crawling + cleaned HTML/markdown + optional network request capture.
+- **DuckDuckGo Tracker Radar**: maps third-party domains to entities/categories and often provides a privacy policy URL.
+
+## Installation
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Crawl4AI uses Playwright under the hood
+python -m playwright install chromium
+```
+
+## Getting inputs
+
+### Option A: Tranco Top N (recommended)
+
+Example: top 100 sites from a specific snapshot date.
+
+```bash
+privacy-dataset --tranco-top 100 --tranco-date 2026-01-01 --out outputs/results.jsonl --artifacts-dir outputs/artifacts
+```
+
+Tranco requires caching (default `.tranco_cache/`).
+
+### Option B: Provide your own list
+
+```bash
+privacy-dataset --input data/sample_sites.txt --out outputs/results.jsonl --artifacts-dir outputs/artifacts
+```
+
+Each line should be a domain or URL.
+
+## Tracker Radar setup (required for third-party -> entity mapping)
+
+1) Download the Tracker Radar repo (git clone) into `tracker-radar/`:
+
+```bash
+git clone https://github.com/duckduckgo/tracker-radar.git tracker-radar
+```
+
+2) Build a local index JSON (fast lookups):
+
+```bash
+python scripts/build_tracker_radar_index.py --tracker-radar-dir tracker-radar --out tracker_radar_index.json
+```
+
+Then pass it to the crawler:
+
+```bash
+privacy-dataset --tranco-top 1000 --tranco-date 2026-01-01 \
+  --tracker-radar-index tracker_radar_index.json \
+  --out outputs/results.jsonl --artifacts-dir outputs/artifacts
+```
+
+## Output
+
+- `results.jsonl`: one JSON per site
+- `artifacts/<site>/`: stored `home.cleaned.html`, `home.raw.html`, `policy.txt`, and optional third-party policy texts.
+
+## Notes / limitations (research-relevant)
+
+- Cookie consent can change which third parties load. **This Step-1 pipeline does NOT click consent banners.**
+- Some third parties don’t have a Tracker Radar entry or policy URL; those will be recorded as unmapped.
+- Policy discovery is high-recall (footer + full link scan + legal hubs + fallback paths), then filtered/ranked.
+
+## CLI help
+
+```bash
+privacy-dataset --help
+```
+
+## Optional: use OpenWPM for third-party collection
+
+By default, third-party domains are extracted from **Crawl4AI network capture**.
+If you need OpenWPM’s full instrumentation pipeline (heavier, slower, but widely used in top-tier measurement papers),
+you can switch engines:
+
+```bash
+privacy-dataset --tranco-top 1000 --tranco-date 2026-01-01 \
+  --tracker-radar-index tracker_radar_index.json \
+  --third-party-engine openwpm --concurrency 1 \
+  --out outputs/results.jsonl --artifacts-dir outputs/artifacts
+```
+
+**Note:** OpenWPM installation is non-trivial and is typically done via OpenWPM’s Docker/conda instructions.
