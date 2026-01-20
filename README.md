@@ -7,7 +7,7 @@ This project builds a **Step-1 research dataset**:
 - **Third-party domain → Entity/category/policy URL (DuckDuckGo Tracker Radar)**
 - **Third-party policy URL → Extracted policy text** (best-effort)
 
-**No LLMs / DeepSeek.** Everything is deterministic + heuristic filtering.
+
 
 ## Why these components
 
