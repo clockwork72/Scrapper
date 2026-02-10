@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { ExplorerSite, ExplorerThirdParty, explorerSites } from '../../data/explorer'
+import { useEffect, useMemo, useState } from 'react'
+import { ExplorerSite, ExplorerThirdParty } from '../../data/explorer'
 
 type ViewerEntry = {
   url: string
@@ -26,6 +26,7 @@ export function ExplorerView({ hasRun, progress, sites }: ExplorerViewProps) {
   const [history, setHistory] = useState<ViewerEntry[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [lastNonViewer, setLastNonViewer] = useState<'sites' | 'thirdParties'>('sites')
+  const [viewerError, setViewerError] = useState<string | null>(null)
 
   const currentEntry = historyIndex >= 0 ? history[historyIndex] : null
 
@@ -41,6 +42,7 @@ export function ExplorerView({ hasRun, progress, sites }: ExplorerViewProps) {
     setHistoryIndex((prev) => prev + 1)
     setLastNonViewer(view === 'viewer' ? lastNonViewer : view)
     setView('viewer')
+    setViewerError(null)
   }
 
   const goBack = () => {
@@ -57,9 +59,14 @@ export function ExplorerView({ hasRun, progress, sites }: ExplorerViewProps) {
     setView(lastNonViewer)
   }
 
+  useEffect(() => {
+    if (!currentEntry?.url) return
+    setViewerError(null)
+  }, [currentEntry?.url])
+
   const sitesToShow = useMemo(() => {
     const fraction = Math.min(1, Math.max(0, 0.01 * Math.round(progress)))
-    const sourceSites = sites && sites.length > 0 ? sites : explorerSites
+    const sourceSites = sites ?? []
     const count = Math.round(sourceSites.length * fraction)
     const slice = sourceSites.slice(0, count)
     const normalizedQuery = query.trim().toLowerCase()
@@ -76,6 +83,14 @@ export function ExplorerView({ hasRun, progress, sites }: ExplorerViewProps) {
     (selectedSite as any)?.third_parties ??
     selectedSite?.thirdParties ??
     []) as ExplorerThirdParty[]
+
+  const openPolicyWindow = async () => {
+    if (!currentEntry?.url) return
+    const response = await window.scraper?.openPolicyWindow(currentEntry.url)
+    if (!response?.ok) {
+      setViewerError('Unable to open embedded page. Try again or check the URL.')
+    }
+  }
 
   if (!hasRun) {
     return (
@@ -268,15 +283,33 @@ export function ExplorerView({ hasRun, progress, sites }: ExplorerViewProps) {
               </button>
               <span className="text-xs text-[var(--muted-text)]">{currentEntry.title}</span>
             </div>
-            {currentEntry.meta && currentEntry.meta.type === 'third-party' && (
-              <div className="theme-chip rounded-full px-3 py-1 text-xs">
-                {currentEntry.meta.entity || 'Unknown entity'}
-              </div>
-            )}
+            <div className="flex items-center gap-2">
+              <button
+                className="focusable rounded-full border border-[var(--border-soft)] px-3 py-1 text-xs"
+                onClick={openPolicyWindow}
+              >
+                Open in window
+              </button>
+              {currentEntry.meta && currentEntry.meta.type === 'third-party' && (
+                <div className="theme-chip rounded-full px-3 py-1 text-xs">
+                  {currentEntry.meta.entity || 'Unknown entity'}
+                </div>
+              )}
+            </div>
           </div>
+          {viewerError && (
+            <div className="mt-3 rounded-xl border border-[var(--color-warn)] bg-black/20 px-3 py-2 text-xs text-[var(--color-warn)]">
+              {viewerError}
+            </div>
+          )}
           <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_260px]">
             <div className="overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-black/20">
-              <iframe title="Policy viewer" src={currentEntry.url} className="h-[520px] w-full" />
+              <iframe
+                title="Policy viewer"
+                src={currentEntry.url}
+                className="h-[520px] w-full"
+                onError={() => setViewerError('This site blocks embedded viewing. Use "Open in window".')}
+              />
             </div>
             {currentEntry.meta && currentEntry.meta.type === 'third-party' && (
               <div className="rounded-2xl border border-[var(--border-soft)] bg-black/20 p-4 text-xs">

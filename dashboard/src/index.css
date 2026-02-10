@@ -2,7 +2,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Always dark color-scheme for native UI bits */
+/* Default to dark color-scheme for native UI bits */
 :root {
     color-scheme: dark;
 }
@@ -51,6 +51,36 @@
     --kbd-bg: #3C3C3C;
     --kbd-text: #ffffff;
     --shadow: 0 8px 32px rgba(0, 0, 0, .45);
+}
+
+/* Academia (research UI) */
+:root[data-theme="academia"] {
+    color-scheme: light;
+    --color-primary: #2F6F6D;
+    --color-sand: #E9E1D6;
+    --color-success: #2E7D32;
+    --color-warn: #B36A2E;
+    --color-danger: #B23A48;
+
+    --color-canvas: #F6F2ED;
+    --color-surface: #FFFFFF;
+    --color-text: #1F2428;
+
+    --border-soft: #D8D2C8;
+    --muted-text: #6A665F;
+    --chip-bg: rgba(47, 111, 109, .08);
+    --chip-ring: rgba(47, 111, 109, .2);
+    --focus-ring: #2F6F6D;
+    --kbd-bg: rgba(47, 111, 109, .12);
+    --kbd-text: #1F2428;
+    --shadow: 0 8px 32px rgba(34, 32, 28, .18);
+}
+
+/* Academia: keep active toggle buttons visible on light canvas */
+:root[data-theme="academia"] .focusable.border.text-white {
+    background: var(--color-danger);
+    border-color: var(--color-danger);
+    color: #ffffff;
 }
 
 * {

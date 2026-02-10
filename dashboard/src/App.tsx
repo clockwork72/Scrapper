@@ -41,6 +41,10 @@ function App() {
   const [cruxApiKey, setCruxApiKey] = useState('')
   const [currentSite, setCurrentSite] = useState<string>('')
   const [excludeSameEntity, setExcludeSameEntity] = useState(false)
+  const [outDir, setOutDir] = useState('outputs')
+  const [runsRoot] = useState('outputs')
+  const [runRecords, setRunRecords] = useState<any[]>([])
+  const [folderBytes, setFolderBytes] = useState<number | null>(null)
 
   const siteSteps = ['Home fetch', 'Policy discovery', '3P extraction', '3P policy fetch']
   const siteStageToIndex: Record<string, number> = {
@@ -55,6 +59,7 @@ function App() {
   }, [theme])
 
   const resultsMetrics = useMemo(() => computeResults(hasRun, progress), [hasRun, progress])
+  const postCruxCount = useCrux ? (stateData?.total_sites ?? summaryData?.total_sites ?? null) : null
 
   useEffect(() => {
     if (!window.scraper) return
@@ -92,6 +97,7 @@ function App() {
         setProgress(100)
         setEtaText('0s')
         setStepIndex(3)
+        refreshRuns()
       }
       if (event?.type === 'site_started' && event.site) {
         setLogs((prev) => [...prev, `Processing ${event.site}`].slice(-50))
@@ -120,18 +126,30 @@ function App() {
     })
   }, [])
 
+  const createRunId = () => {
+    try {
+      return crypto.randomUUID()
+    } catch {
+      return `run_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`
+    }
+  }
+
   const startRun = async () => {
     if (!topN || Number(topN) <= 0) return
+    const runId = createRunId()
+    const runOutDir = `${runsRoot}/output_${runId}`
     setErrorMessage(null)
     setLogs([])
     setSummaryData(null)
     setExplorerData(null)
+    setOutDir(runOutDir)
     if (window.scraper) {
       const res = await window.scraper.startRun({
         topN: Number(topN),
         trackerRadarIndex: 'tracker_radar_index.json',
-        outDir: 'outputs',
-        artifactsDir: 'outputs/artifacts',
+        outDir: runOutDir,
+        artifactsDir: `${runOutDir}/artifacts`,
+        runId,
         cruxFilter: useCrux,
         cruxApiKey: useCrux ? cruxApiKey : undefined,
         excludeSameEntity: excludeSameEntity,
@@ -198,9 +216,9 @@ function App() {
     if (!window.scraper || !hasRun) return
     const interval = setInterval(async () => {
       try {
-        const summary = await window.scraper?.readSummary()
+        const summary = await window.scraper?.readSummary(`${outDir}/results.summary.json`)
         if (summary?.ok) setSummaryData(summary.data)
-        const state = await window.scraper?.readState()
+        const state = await window.scraper?.readState(`${outDir}/run_state.json`)
         if (state?.ok) {
           setStateData(state.data)
           if (state.data?.total_sites && state.data?.processed_sites && running) {
@@ -211,17 +229,36 @@ function App() {
             setRunStartedAt(Date.now())
           }
         }
-        const explorer = await window.scraper?.readExplorer(undefined, 500)
+        const explorer = await window.scraper?.readExplorer(`${outDir}/explorer.jsonl`, 500)
         if (explorer?.ok && Array.isArray(explorer.data)) {
           const cleaned = explorer.data.filter((rec: any) => rec && rec.site)
           setExplorerData(cleaned)
+        }
+        const size = await window.scraper?.getFolderSize(outDir)
+        if (size?.ok && typeof size.bytes === 'number') {
+          setFolderBytes(size.bytes)
         }
       } catch (error) {
         setErrorMessage(String(error))
       }
     }, 2000)
     return () => clearInterval(interval)
-  }, [hasRun])
+  }, [hasRun, outDir])
+
+  const refreshRuns = async (baseDir: string = runsRoot) => {
+    if (!window.scraper) return
+    const res = await window.scraper.listRuns(baseDir)
+    if (res?.ok && Array.isArray(res.runs)) {
+      setRunRecords(res.runs)
+    } else {
+      setRunRecords([])
+    }
+  }
+
+  useEffect(() => {
+    if (activeNav !== 'database') return
+    refreshRuns()
+  }, [activeNav, runsRoot])
 
   const clearResults = async (includeArtifacts?: boolean) => {
     if (!window.scraper) {
@@ -234,7 +271,7 @@ function App() {
       return
     }
     setClearing(true)
-    const res = await window.scraper.clearResults({ includeArtifacts, outDir: 'outputs' })
+    const res = await window.scraper.clearResults({ includeArtifacts, outDir: outDir })
     if (!res.ok) {
       setErrorMessage(res.error || 'Failed to clear results')
     } else {
@@ -244,6 +281,53 @@ function App() {
       setHasRun(false)
       setProgress(0)
       setLogs([])
+    }
+    setClearing(false)
+  }
+
+  const loadOutDir = async (dirOverride?: string) => {
+    if (!window.scraper) return
+    const targetDir = dirOverride || outDir
+    if (dirOverride) {
+      setOutDir(dirOverride)
+    }
+    const summary = await window.scraper.readSummary(`${targetDir}/results.summary.json`)
+    if (summary?.ok) setSummaryData(summary.data)
+    const state = await window.scraper.readState(`${targetDir}/run_state.json`)
+    if (state?.ok) setStateData(state.data)
+    const explorer = await window.scraper.readExplorer(`${targetDir}/explorer.jsonl`, 500)
+    if (explorer?.ok && Array.isArray(explorer.data)) {
+      const cleaned = explorer.data.filter((rec: any) => rec && rec.site)
+      setExplorerData(cleaned)
+    } else {
+      setExplorerData([])
+    }
+    const size = await window.scraper.getFolderSize(targetDir)
+    if (size?.ok && typeof size.bytes === 'number') {
+      setFolderBytes(size.bytes)
+    }
+    const hasAnyResults = Boolean(summary?.ok || (explorer?.ok && Array.isArray(explorer.data) && explorer.data.length))
+    if (hasAnyResults) {
+      setHasRun(true)
+      setRunning(false)
+      setProgress(100)
+    }
+  }
+
+  const deleteOutDir = async () => {
+    if (!window.scraper) return
+    setClearing(true)
+    const res = await window.scraper.deleteOutput(outDir)
+    if (!res.ok) {
+      setErrorMessage(res.error || 'Failed to delete output folder')
+    } else {
+      setSummaryData(null)
+      setExplorerData(null)
+      setStateData(null)
+      setHasRun(false)
+      setProgress(0)
+      setLogs([])
+      setFolderBytes(null)
     }
     setClearing(false)
   }
@@ -305,6 +389,7 @@ function App() {
             onCruxKeyChange={setCruxApiKey}
             excludeSameEntity={excludeSameEntity}
             onToggleExcludeSameEntity={setExcludeSameEntity}
+            postCruxCount={postCruxCount}
           />
         )}
         {activeNav === 'results' && (
@@ -315,6 +400,7 @@ function App() {
             metrics={resultsMetrics}
             summary={summaryData}
             useCrux={useCrux}
+            postCruxCount={postCruxCount}
           />
         )}
         {activeNav === 'explorer' && (
@@ -323,10 +409,19 @@ function App() {
         {activeNav === 'analytics' && <AnalyticsView summary={summaryData} state={stateData} />}
         {activeNav === 'database' && (
           <DatabaseView
+            runsRoot={runsRoot}
+            runs={runRecords}
+            onRefreshRuns={() => refreshRuns()}
+            onSelectRun={(dir) => loadOutDir(dir)}
             summary={summaryData}
             state={stateData}
             onClear={clearResults}
             clearing={clearing}
+            outDir={outDir}
+            onOutDirChange={setOutDir}
+            onLoadOutDir={() => loadOutDir()}
+            onDeleteOutDir={deleteOutDir}
+            folderBytes={folderBytes}
           />
         )}
         {activeNav === 'settings' && <SettingsView theme={theme} onThemeChange={setTheme} />}

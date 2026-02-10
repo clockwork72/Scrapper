@@ -22,6 +22,10 @@ declare global {
       readState: (path?: string) => Promise<{ ok: boolean; data?: any; error?: string; path?: string }>
       readExplorer: (path?: string, limit?: number) => Promise<{ ok: boolean; data?: any; error?: string; path?: string }>
       clearResults: (options?: { includeArtifacts?: boolean; outDir?: string }) => Promise<{ ok: boolean; error?: string; removed?: string[]; errors?: string[] }>
+      deleteOutput: (outDir?: string) => Promise<{ ok: boolean; error?: string; path?: string }>
+      getFolderSize: (outDir?: string) => Promise<{ ok: boolean; error?: string; bytes?: number; path?: string }>
+      listRuns: (baseOutDir?: string) => Promise<{ ok: boolean; error?: string; root?: string; runs?: any[] }>
+      openPolicyWindow: (url: string) => Promise<{ ok: boolean; error?: string }>
       onEvent: (callback: (event: any) => void) => void
       onLog: (callback: (event: any) => void) => void
       onError: (callback: (event: any) => void) => void

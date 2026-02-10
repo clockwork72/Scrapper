@@ -29,6 +29,10 @@ contextBridge.exposeInMainWorld('scraper', {
   readExplorer: (path?: string, limit?: number) => ipcRenderer.invoke('scraper:read-explorer', path, limit),
   clearResults: (options?: { includeArtifacts?: boolean; outDir?: string }) =>
     ipcRenderer.invoke('scraper:clear-results', options),
+  deleteOutput: (outDir?: string) => ipcRenderer.invoke('scraper:delete-output', outDir),
+  getFolderSize: (outDir?: string) => ipcRenderer.invoke('scraper:folder-size', outDir),
+  listRuns: (baseOutDir?: string) => ipcRenderer.invoke('scraper:list-runs', baseOutDir),
+  openPolicyWindow: (url: string) => ipcRenderer.invoke('scraper:open-policy-window', url),
   onEvent: (callback: (event: any) => void) => ipcRenderer.on('scraper:event', (_evt, data) => callback(data)),
   onLog: (callback: (event: any) => void) => ipcRenderer.on('scraper:log', (_evt, data) => callback(data)),
   onError: (callback: (event: any) => void) => ipcRenderer.on('scraper:error', (_evt, data) => callback(data)),

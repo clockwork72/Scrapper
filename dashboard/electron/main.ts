@@ -29,6 +29,7 @@ const REPO_ROOT = path.resolve(process.env.APP_ROOT, '..')
 
 let win: BrowserWindow | null
 let scraperProcess: ChildProcessWithoutNullStreams | null = null
+const policyWindows = new Set<BrowserWindow>()
 
 type ScraperStartOptions = {
   topN?: number
@@ -77,6 +78,25 @@ function parseJsonl(content: string, limit?: number) {
   return out
 }
 
+async function getDirectorySize(dirPath: string): Promise<number> {
+  let total = 0
+  const entries = await fs.promises.readdir(dirPath, { withFileTypes: true })
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name)
+    if (entry.isDirectory()) {
+      total += await getDirectorySize(fullPath)
+    } else if (entry.isFile()) {
+      try {
+        const stat = await fs.promises.stat(fullPath)
+        total += stat.size
+      } catch {
+        continue
+      }
+    }
+  }
+  return total
+}
+
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
@@ -96,6 +116,27 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
+}
+
+function createPolicyWindow(url: string) {
+  const policyWin = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    title: 'Policy Viewer',
+    backgroundColor: '#0B0E14',
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+    },
+  })
+  policyWin.setMenuBarVisibility(false)
+  policyWin.loadURL(url)
+  policyWindows.add(policyWin)
+  policyWin.on('closed', () => {
+    policyWindows.delete(policyWin)
+  })
+  return policyWin
 }
 
 ipcMain.handle('scraper:get-paths', (_event, outDir?: string) => {
@@ -137,6 +178,76 @@ ipcMain.handle('scraper:read-explorer', async (_event, filePath?: string, limit?
     const raw = await fs.promises.readFile(target, 'utf-8')
     const data = target.endsWith('.jsonl') ? parseJsonl(raw, limit) : JSON.parse(raw)
     return { ok: true, data, path: target }
+  } catch (error) {
+    return { ok: false, error: String(error) }
+  }
+})
+
+ipcMain.handle('scraper:folder-size', async (_event, outDir?: string) => {
+  try {
+    const target = outDir ? path.resolve(REPO_ROOT, outDir) : defaultPaths().outDir
+    if (!fs.existsSync(target)) {
+      return { ok: false, error: 'not_found', path: target }
+    }
+    const size = await getDirectorySize(target)
+    return { ok: true, bytes: size, path: target }
+  } catch (error) {
+    return { ok: false, error: String(error) }
+  }
+})
+
+ipcMain.handle('scraper:list-runs', async (_event, baseOutDir?: string) => {
+  try {
+    const root = baseOutDir ? path.resolve(REPO_ROOT, baseOutDir) : defaultPaths().outDir
+    if (!fs.existsSync(root)) {
+      return { ok: false, error: 'not_found', path: root }
+    }
+    const entries = await fs.promises.readdir(root, { withFileTypes: true })
+    const runs: any[] = []
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue
+      const dir = path.join(root, entry.name)
+      const summaryPath = path.join(dir, 'results.summary.json')
+      const statePath = path.join(dir, 'run_state.json')
+      let summary: any = null
+      let state: any = null
+      if (fs.existsSync(summaryPath)) {
+        try {
+          summary = JSON.parse(await fs.promises.readFile(summaryPath, 'utf-8'))
+        } catch {
+          summary = null
+        }
+      }
+      if (fs.existsSync(statePath)) {
+        try {
+          state = JSON.parse(await fs.promises.readFile(statePath, 'utf-8'))
+        } catch {
+          state = null
+        }
+      }
+      if (!summary && !state && !entry.name.startsWith('output_')) {
+        continue
+      }
+      let mtime = ''
+      try {
+        const stat = await fs.promises.stat(dir)
+        mtime = stat.mtime.toISOString()
+      } catch {
+        mtime = ''
+      }
+      const runId = summary?.run_id || state?.run_id || entry.name.replace(/^output_/, '')
+      runs.push({
+        runId,
+        folder: entry.name,
+        outDir: path.relative(REPO_ROOT, dir),
+        summary,
+        state,
+        updated_at: summary?.updated_at || state?.updated_at || mtime,
+        started_at: summary?.started_at || state?.started_at || null,
+      })
+    }
+    runs.sort((a, b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')))
+    return { ok: true, root, runs }
   } catch (error) {
     return { ok: false, error: String(error) }
   }
@@ -244,6 +355,22 @@ ipcMain.handle('scraper:stop', async () => {
   return { ok: true }
 })
 
+ipcMain.handle('scraper:open-policy-window', async (_event, url?: string) => {
+  if (!url || typeof url !== 'string') {
+    return { ok: false, error: 'invalid_url' }
+  }
+  try {
+    const parsed = new URL(url)
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      return { ok: false, error: 'unsupported_protocol' }
+    }
+    createPolicyWindow(url)
+    return { ok: true }
+  } catch (error) {
+    return { ok: false, error: String(error) }
+  }
+})
+
 ipcMain.handle('scraper:clear-results', async (_event, options?: { includeArtifacts?: boolean; outDir?: string }) => {
   if (scraperProcess) {
     return { ok: false, error: 'scraper_running' }
@@ -280,6 +407,19 @@ ipcMain.handle('scraper:clear-results', async (_event, options?: { includeArtifa
   }
 
   return { ok: errors.length === 0, removed, missing, errors, paths }
+})
+
+ipcMain.handle('scraper:delete-output', async (_event, outDir?: string) => {
+  try {
+    const target = outDir ? path.resolve(REPO_ROOT, outDir) : defaultPaths().outDir
+    if (!fs.existsSync(target)) {
+      return { ok: false, error: 'not_found', path: target }
+    }
+    await fs.promises.rm(target, { recursive: true, force: true })
+    return { ok: true, path: target }
+  } catch (error) {
+    return { ok: false, error: String(error) }
+  }
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

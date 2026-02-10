@@ -34,6 +34,16 @@ export function SettingsView({ theme, onThemeChange }: SettingsViewProps) {
           >
             Red
           </button>
+          <button
+            className={`focusable rounded-full border px-4 py-2 text-xs ${
+              theme === 'academia'
+                ? 'border-[var(--color-danger)] text-white'
+                : 'border-[var(--border-soft)] text-[var(--muted-text)]'
+            }`}
+            onClick={() => onThemeChange('academia')}
+          >
+            Academia
+          </button>
         </div>
       </section>
 

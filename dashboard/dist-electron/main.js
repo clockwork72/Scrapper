@@ -14,6 +14,7 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 const REPO_ROOT = path.resolve(process.env.APP_ROOT, "..");
 let win;
 let scraperProcess = null;
+const policyWindows = /* @__PURE__ */ new Set();
 function sendToRenderer(channel, payload) {
   if (win && !win.isDestroyed()) {
     win.webContents.send(channel, payload);
@@ -45,6 +46,24 @@ function parseJsonl(content, limit) {
   }
   return out;
 }
+async function getDirectorySize(dirPath) {
+  let total = 0;
+  const entries = await fs.promises.readdir(dirPath, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      total += await getDirectorySize(fullPath);
+    } else if (entry.isFile()) {
+      try {
+        const stat = await fs.promises.stat(fullPath);
+        total += stat.size;
+      } catch {
+        continue;
+      }
+    }
+  }
+  return total;
+}
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
@@ -60,6 +79,26 @@ function createWindow() {
   } else {
     win.loadFile(path.join(RENDERER_DIST, "index.html"));
   }
+}
+function createPolicyWindow(url) {
+  const policyWin = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    title: "Policy Viewer",
+    backgroundColor: "#0B0E14",
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
+    }
+  });
+  policyWin.setMenuBarVisibility(false);
+  policyWin.loadURL(url);
+  policyWindows.add(policyWin);
+  policyWin.on("closed", () => {
+    policyWindows.delete(policyWin);
+  });
+  return policyWin;
 }
 ipcMain.handle("scraper:get-paths", (_event, outDir) => {
   return defaultPaths(outDir);
@@ -97,6 +136,74 @@ ipcMain.handle("scraper:read-explorer", async (_event, filePath, limit) => {
     const raw = await fs.promises.readFile(target, "utf-8");
     const data = target.endsWith(".jsonl") ? parseJsonl(raw, limit) : JSON.parse(raw);
     return { ok: true, data, path: target };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
+});
+ipcMain.handle("scraper:folder-size", async (_event, outDir) => {
+  try {
+    const target = outDir ? path.resolve(REPO_ROOT, outDir) : defaultPaths().outDir;
+    if (!fs.existsSync(target)) {
+      return { ok: false, error: "not_found", path: target };
+    }
+    const size = await getDirectorySize(target);
+    return { ok: true, bytes: size, path: target };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
+});
+ipcMain.handle("scraper:list-runs", async (_event, baseOutDir) => {
+  try {
+    const root = baseOutDir ? path.resolve(REPO_ROOT, baseOutDir) : defaultPaths().outDir;
+    if (!fs.existsSync(root)) {
+      return { ok: false, error: "not_found", path: root };
+    }
+    const entries = await fs.promises.readdir(root, { withFileTypes: true });
+    const runs = [];
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      const dir = path.join(root, entry.name);
+      const summaryPath = path.join(dir, "results.summary.json");
+      const statePath = path.join(dir, "run_state.json");
+      let summary = null;
+      let state = null;
+      if (fs.existsSync(summaryPath)) {
+        try {
+          summary = JSON.parse(await fs.promises.readFile(summaryPath, "utf-8"));
+        } catch {
+          summary = null;
+        }
+      }
+      if (fs.existsSync(statePath)) {
+        try {
+          state = JSON.parse(await fs.promises.readFile(statePath, "utf-8"));
+        } catch {
+          state = null;
+        }
+      }
+      if (!summary && !state && !entry.name.startsWith("output_")) {
+        continue;
+      }
+      let mtime = "";
+      try {
+        const stat = await fs.promises.stat(dir);
+        mtime = stat.mtime.toISOString();
+      } catch {
+        mtime = "";
+      }
+      const runId = (summary == null ? void 0 : summary.run_id) || (state == null ? void 0 : state.run_id) || entry.name.replace(/^output_/, "");
+      runs.push({
+        runId,
+        folder: entry.name,
+        outDir: path.relative(REPO_ROOT, dir),
+        summary,
+        state,
+        updated_at: (summary == null ? void 0 : summary.updated_at) || (state == null ? void 0 : state.updated_at) || mtime,
+        started_at: (summary == null ? void 0 : summary.started_at) || (state == null ? void 0 : state.started_at) || null
+      });
+    }
+    runs.sort((a, b) => String(b.updated_at || "").localeCompare(String(a.updated_at || "")));
+    return { ok: true, root, runs };
   } catch (error) {
     return { ok: false, error: String(error) };
   }
@@ -193,6 +300,21 @@ ipcMain.handle("scraper:stop", async () => {
   scraperProcess.kill();
   return { ok: true };
 });
+ipcMain.handle("scraper:open-policy-window", async (_event, url) => {
+  if (!url || typeof url !== "string") {
+    return { ok: false, error: "invalid_url" };
+  }
+  try {
+    const parsed = new URL(url);
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      return { ok: false, error: "unsupported_protocol" };
+    }
+    createPolicyWindow(url);
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
+});
 ipcMain.handle("scraper:clear-results", async (_event, options) => {
   if (scraperProcess) {
     return { ok: false, error: "scraper_running" };
@@ -225,6 +347,18 @@ ipcMain.handle("scraper:clear-results", async (_event, options) => {
     }
   }
   return { ok: errors.length === 0, removed, missing, errors, paths };
+});
+ipcMain.handle("scraper:delete-output", async (_event, outDir) => {
+  try {
+    const target = outDir ? path.resolve(REPO_ROOT, outDir) : defaultPaths().outDir;
+    if (!fs.existsSync(target)) {
+      return { ok: false, error: "not_found", path: target };
+    }
+    await fs.promises.rm(target, { recursive: true, force: true });
+    return { ok: true, path: target };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
 });
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

@@ -8,9 +8,18 @@ type ResultsViewProps = {
   metrics: ResultsMetrics
   summary?: any
   useCrux?: boolean
+  postCruxCount?: number | null
 }
 
-export function ResultsView({ hasRun, progress, topN, metrics, summary, useCrux }: ResultsViewProps) {
+export function ResultsView({
+  hasRun,
+  progress,
+  topN,
+  metrics,
+  summary,
+  useCrux,
+  postCruxCount,
+}: ResultsViewProps) {
   if (!hasRun) {
     return (
       <section className="card rounded-2xl p-6">
@@ -47,6 +56,16 @@ export function ResultsView({ hasRun, progress, topN, metrics, summary, useCrux 
     const prev = entity.prevalence_max ?? entity.prevalence_avg ?? entity.prevalence ?? 0
     return Math.max(max, prev)
   }, 0.0001)
+  const postCruxSites =
+    typeof postCruxCount === 'number' ? postCruxCount : typeof summary?.total_sites === 'number' ? summary.total_sites : null
+  const overviewStats = [
+    { label: 'Sites processed', value: summary?.processed_sites ?? metrics.totalSitesProcessed },
+    ...(useCrux ? [{ label: 'Post‑CrUX sites', value: postCruxSites }] : []),
+    { label: 'Success rate', value: `${summary?.success_rate ?? metrics.successRate}%` },
+    { label: '3P services detected', value: thirdPartyDetected },
+    { label: '3P policies found', value: thirdPartyPoliciesFound },
+    { label: 'Mapped in Tracker Radar', value: radarMapped },
+  ]
 
   return (
     <>
@@ -64,17 +83,21 @@ export function ResultsView({ hasRun, progress, topN, metrics, summary, useCrux 
             {useCrux && <span className="theme-chip rounded-full px-3 py-1 text-xs">CrUX filter on</span>}
           </div>
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-          {[
-            { label: 'Sites processed', value: (summary?.processed_sites ?? metrics.totalSitesProcessed).toLocaleString() },
-            { label: 'Success rate', value: `${summary?.success_rate ?? metrics.successRate}%` },
-            { label: '3P services detected', value: thirdPartyDetected.toLocaleString() },
-            { label: '3P policies found', value: thirdPartyPoliciesFound.toLocaleString() },
-            { label: 'Mapped in Tracker Radar', value: radarMapped.toLocaleString() },
-          ].map((stat) => (
+        <div
+          className={`mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 ${
+            useCrux ? 'xl:grid-cols-6' : 'xl:grid-cols-5'
+          }`}
+        >
+          {overviewStats.map((stat) => (
             <div key={stat.label} className="rounded-xl border border-[var(--border-soft)] bg-black/20 px-4 py-3">
               <p className="text-xs text-[var(--muted-text)]">{stat.label}</p>
-              <p className="text-lg font-semibold">{stat.value}</p>
+              <p className="text-lg font-semibold">
+                {stat.value === null || stat.value === undefined
+                  ? '—'
+                  : typeof stat.value === 'number'
+                    ? stat.value.toLocaleString()
+                    : stat.value}
+              </p>
             </div>
           ))}
         </div>

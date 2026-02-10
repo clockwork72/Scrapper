@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 const logLines = [
-  'Loaded Tranco snapshot 2026-01-01',
-  'Prefiltering non-browsable domains',
-  'Launching Crawl4AI workers (3)',
-  'Discovering privacy policy candidates',
-  'Mapping Tracker Radar entities',
-  'Writing outputs/results.jsonl',
+ ''
 ]
 
 type LauncherViewProps = {
@@ -31,6 +26,7 @@ type LauncherViewProps = {
   onCruxKeyChange?: (value: string) => void
   excludeSameEntity?: boolean
   onToggleExcludeSameEntity?: (next: boolean) => void
+  postCruxCount?: number | null
 }
 
 export function LauncherView({
@@ -53,12 +49,13 @@ export function LauncherView({
   onCruxKeyChange,
   excludeSameEntity,
   onToggleExcludeSameEntity,
+  postCruxCount,
   steps,
   currentSite,
 }: LauncherViewProps) {
   const logRef = useRef<HTMLDivElement | null>(null)
   const visibleLogs = useMemo(() => {
-    if (logs && logs.length > 0) return logs.slice(-12)
+    if (logs && logs.length > 0) return logs.slice(-120)
     if (!hasRun) return []
     if (progress >= 100) return logLines
     return logLines.slice(0, Math.min(logLines.length, stepIndex + 2))
@@ -132,6 +129,11 @@ export function LauncherView({
             >
               Exclude same-entity {excludeSameEntity ? 'on' : 'off'}
             </button>
+            {useCrux && (
+              <span className="text-xs text-[var(--muted-text)]">
+                Post‑CrUX sites: {postCruxCount ?? '—'}
+              </span>
+            )}
             {useCrux && (
               <input
                 type="password"
@@ -258,7 +260,7 @@ export function LauncherView({
             )}
             <div
               ref={logRef}
-              className="mono max-h-56 overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-black/30 p-3 text-[11px] leading-relaxed text-[var(--muted-text)]"
+              className="mono max-h-[420px] overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-black/30 p-3 text-[11px] leading-relaxed text-[var(--muted-text)]"
             >
               {visibleLogs.length === 0 && <div>Launch a run to see logs.</div>}
               {visibleLogs.map((line, index) => (

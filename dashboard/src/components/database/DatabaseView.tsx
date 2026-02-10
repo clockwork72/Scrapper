@@ -1,17 +1,152 @@
 type DatabaseViewProps = {
+  runsRoot?: string
+  runs?: any[]
+  onRefreshRuns?: () => void
+  onSelectRun?: (outDir: string) => void
   summary?: any
   state?: any
   onClear: (includeArtifacts?: boolean) => void
   clearing?: boolean
+  outDir: string
+  onOutDirChange: (value: string) => void
+  onLoadOutDir: () => void
+  onDeleteOutDir: () => void
+  folderBytes?: number | null
 }
 
-export function DatabaseView({ summary, state, onClear, clearing }: DatabaseViewProps) {
+function formatBytes(bytes?: number | null) {
+  if (bytes === null || bytes === undefined) return '—'
+  if (bytes === 0) return '0 B'
+  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+  let value = bytes
+  let idx = 0
+  while (value >= 1024 && idx < units.length - 1) {
+    value /= 1024
+    idx += 1
+  }
+  return `${value.toFixed(1)} ${units[idx]}`
+}
+
+function formatDate(value?: string | null) {
+  if (!value) return '—'
+  const parsed = new Date(value)
+  if (Number.isNaN(parsed.getTime())) return value
+  return parsed.toLocaleString()
+}
+
+function formatDurationMs(start?: string | null, end?: string | null) {
+  if (!start || !end) return '—'
+  const startMs = new Date(start).getTime()
+  const endMs = new Date(end).getTime()
+  if (!Number.isFinite(startMs) || !Number.isFinite(endMs) || endMs <= startMs) return '—'
+  const seconds = Math.round((endMs - startMs) / 1000)
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const secs = seconds % 60
+  if (hours > 0) return `${hours}h ${String(minutes).padStart(2, '0')}m`
+  if (minutes > 0) return `${minutes}m ${String(secs).padStart(2, '0')}s`
+  return `${secs}s`
+}
+
+function resolveRunStats(run: any) {
+  const summary = run?.summary || {}
+  const state = run?.state || {}
+  const processed = summary.processed_sites ?? state.processed_sites ?? 0
+  const total = summary.total_sites ?? state.total_sites ?? 0
+  const statusCounts = summary.status_counts ?? state.status_counts ?? {}
+  const ok = statusCounts.ok ?? 0
+  const successRate =
+    summary.success_rate ?? (processed ? Math.round((Number(ok) / Math.max(1, processed)) * 100) : 0)
+  return { processed, total, successRate }
+}
+
+export function DatabaseView({
+  runsRoot,
+  runs = [],
+  onRefreshRuns,
+  onSelectRun,
+  summary,
+  state,
+  onClear,
+  clearing,
+  outDir,
+  onOutDirChange,
+  onLoadOutDir,
+  onDeleteOutDir,
+  folderBytes,
+}: DatabaseViewProps) {
   const processed = summary?.processed_sites ?? state?.processed_sites ?? 0
   const total = summary?.total_sites ?? state?.total_sites ?? 0
   const thirdParty = summary?.third_party || {}
 
   return (
     <>
+      <section className="card rounded-2xl p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-text)]">Runs</p>
+            <h2 className="text-lg font-semibold">Run history</h2>
+            <p className="text-xs text-[var(--muted-text)]">
+              Output root: <span className="mono">{runsRoot || 'outputs'}</span>
+            </p>
+          </div>
+          <button
+            className="focusable rounded-full border border-[var(--border-soft)] px-4 py-2 text-xs"
+            onClick={onRefreshRuns}
+          >
+            Refresh
+          </button>
+        </div>
+
+        <div className="mt-4 overflow-hidden rounded-2xl border border-[var(--border-soft)]">
+          <div className="grid grid-cols-[1.4fr_0.9fr_0.6fr_0.9fr_0.8fr_0.4fr] gap-2 bg-black/30 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-[var(--muted-text)]">
+            <span>Run ID</span>
+            <span>Sites</span>
+            <span>Success</span>
+            <span>Updated</span>
+            <span>Duration</span>
+            <span></span>
+          </div>
+          <div className="max-h-[320px] overflow-y-auto bg-black/10">
+            {runs.length === 0 && (
+              <div className="px-4 py-6 text-sm text-[var(--muted-text)]">No run folders found.</div>
+            )}
+            {runs.map((run) => {
+              const stats = resolveRunStats(run)
+              const selected = run.outDir === outDir
+              return (
+                <div
+                  key={`${run.runId}-${run.outDir}`}
+                  className={`grid grid-cols-[1.4fr_0.9fr_0.6fr_0.9fr_0.8fr_0.4fr] items-center gap-2 border-t border-[var(--border-soft)] px-4 py-3 text-xs ${
+                    selected ? 'bg-black/30' : ''
+                  }`}
+                >
+                  <div className="mono text-[var(--color-text)]">{run.runId || run.folder}</div>
+                  <div className="text-[var(--muted-text)]">
+                    {stats.processed.toLocaleString()} / {stats.total || '—'}
+                  </div>
+                  <div className="text-[var(--muted-text)]">{stats.successRate ? `${stats.successRate}%` : '—'}</div>
+                  <div className="text-[var(--muted-text)]">{formatDate(run.updated_at)}</div>
+                  <div className="text-[var(--muted-text)]">
+                    {formatDurationMs(run.started_at, run.updated_at)}
+                  </div>
+                  <div className="text-right">
+                    <button
+                      className={`focusable rounded-full border px-3 py-1 ${
+                        selected ? 'border-[var(--color-danger)] text-white' : 'border-[var(--border-soft)]'
+                      }`}
+                      onClick={() => onSelectRun?.(run.outDir)}
+                    >
+                      {selected ? 'Loaded' : 'Load'}
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
       <section className="card rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -37,7 +172,30 @@ export function DatabaseView({ summary, state, onClear, clearing }: DatabaseView
             >
               Clear + artifacts
             </button>
+            <button
+              className="focusable rounded-full border border-[var(--border-soft)] px-4 py-2 text-xs"
+              onClick={onDeleteOutDir}
+              disabled={clearing}
+            >
+              Delete output folder
+            </button>
           </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
+          <input
+            className="focusable w-72 rounded-xl border border-[var(--border-soft)] bg-black/20 px-4 py-2 text-sm text-white"
+            value={outDir}
+            onChange={(event) => onOutDirChange(event.target.value)}
+            placeholder="outputs"
+          />
+          <button
+            className="focusable rounded-full border border-[var(--border-soft)] px-4 py-2 text-xs"
+            onClick={onLoadOutDir}
+          >
+            Load folder
+          </button>
+          <span className="text-xs text-[var(--muted-text)]">Folder size: {formatBytes(folderBytes)}</span>
         </div>
 
         <div className="mt-5 grid gap-4 lg:grid-cols-[1.2fr_1fr]">
