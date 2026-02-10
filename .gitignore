@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.whl
+pip-wheel-metadata/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# Virtual envs
+.venv/
+venv/
+ENV/
+
+# Node / Electron
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+npm-debug.log*
+.yarn/
+.pnpm-store/
+
+# Vite / Electron build outputs
+dist/
+dist-electron/
+.vite/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output artifacts / datasets
+outputs/
+outputsresults.jsonl
+.tranco_cache/
+tracker_radar_index.json
+
+# Tracker Radar clone
+tracker-radar/
+
+# OpenWPM / SQLite
+*.sqlite
+*.db
+
+# Playwright
+.playwright/
+playwright/.cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Electron
+*.asar
+
+# Secrets
+*.env

@@ -119,7 +119,19 @@ def score_link(anchor_text: str, url: str, *, is_same_site: bool) -> float:
     score += 0.8 if is_same_site else -0.8
     return score
 
-def _allow_external_candidate(site_etld1: str, cand_url: str) -> bool:
+def _has_privacy_keyword(text: str) -> bool:
+    t = _norm_space(text).lower()
+    return any(kw in t for kw in PRIVACY_KEYWORDS)
+
+def _url_privacy_signal(url: str) -> bool:
+    u = (url or "").lower()
+    return any(k in u for k in (
+        "privacy", "privacy-policy", "privacy_policy", "privacy-notice",
+        "data-protection", "data_protection", "gdpr", "rgpd",
+        "datenschutz", "confidential", "privacidad", "privacidade",
+    ))
+
+def _allow_external_candidate(site_etld1: str, cand_url: str, anchor_text: str, source: str) -> bool:
     cand_et = etld1(cand_url)
     if not cand_et:
         return False
@@ -131,6 +143,13 @@ def _allow_external_candidate(site_etld1: str, cand_url: str) -> bool:
     site_label = site_etld1.split(".")[0].lower() if site_etld1 else ""
     if site_label and site_label in cand_url.lower():
         return True
+    # Allow external links when there's a strong privacy signal (usually a site-owned policy).
+    anchor_has_privacy = _has_privacy_keyword(anchor_text)
+    url_has_privacy = _url_privacy_signal(cand_url)
+    if source in ("footer", "hub", "fallback"):
+        return anchor_has_privacy or url_has_privacy
+    # For body links, require stronger evidence.
+    return anchor_has_privacy and url_has_privacy
     return False
 
 def extract_link_candidates(html: str, base_url: str, site_etld1: str) -> list[LinkCandidate]:
@@ -155,7 +174,7 @@ def extract_link_candidates(html: str, base_url: str, site_etld1: str) -> list[L
             abs_url = urljoin(base_url, href)
             if not _is_http_url(abs_url):
                 continue
-            if not _allow_external_candidate(site_etld1, abs_url):
+            if not _allow_external_candidate(site_etld1, abs_url, text, source):
                 continue
 
             cand_et = etld1(abs_url)

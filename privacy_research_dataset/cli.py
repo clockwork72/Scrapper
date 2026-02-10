@@ -3,7 +3,11 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import re
+import sys
+import uuid
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -13,8 +17,9 @@ from .crawl4ai_client import Crawl4AIClient
 from .crawler import process_site
 from .tracker_radar import TrackerRadarIndex
 from .tranco_list import get_tranco_sites
-from .utils.io import append_jsonl
+from .utils.io import append_jsonl, write_json
 from .utils.logging import log, warn
+from .summary import SummaryBuilder, site_to_explorer_record
 
 
 # ---------------------------
@@ -30,6 +35,7 @@ DEFAULT_EXCLUDE_SUFFIXES: set[str] = {
 
 _HTML_MARKER = re.compile(r"(?is)<\s*!doctype\s+html|<\s*html\b|<\s*head\b|<\s*body\b")
 _LINK_MARKER = re.compile(r"(?is)<\s*a\b")
+_CRUX_ENDPOINT = "https://chromeuxreport.googleapis.com/v1/records:queryRecord"
 
 
 def _parse_args() -> argparse.Namespace:
@@ -66,6 +72,24 @@ def _parse_args() -> argparse.Namespace:
     scale.add_argument("--third-party-engine", type=str, default="crawl4ai", choices=["crawl4ai", "openwpm"], help="How to collect third-party requests: crawl4ai (default) or openwpm (heavier).")
     scale.add_argument("--no-third-party-policy-fetch", action="store_true", help="Do not fetch third-party policy texts (still records mappings).")
     scale.add_argument("--third-party-policy-max", type=int, default=30, help="Max number of third-party policies to fetch per site (ranked by prevalence when available).")
+    scale.add_argument("--exclude-same-entity", action="store_true", help="Exclude third-party domains owned by the same entity as the first-party site (requires Tracker Radar).")
+
+    crux = p.add_argument_group("CrUX filter (browsable origins)")
+    crux.add_argument("--crux-filter", action="store_true", help="Filter input sites to those present in the Chrome UX Report dataset.")
+    crux.add_argument("--crux-api-key", type=str, default=None, help="Chrome UX Report API key (or set CRUX_API_KEY env var).")
+    crux.add_argument("--crux-timeout-ms", type=int, default=7000, help="Timeout for CrUX API requests (ms).")
+    crux.add_argument("--crux-concurrency", type=int, default=20, help="Concurrent CrUX API requests.")
+    crux.add_argument("--crux-allow-http", action="store_true", help="Fallback to http origin if https isn't found.")
+
+    skip = p.add_argument_group("Browsable-only (skip failures)")
+    skip.add_argument("--skip-home-fetch-failed", action="store_true", help="Drop sites that fail homepage fetch (do not write to results).")
+
+    sync = p.add_argument_group("Integration / telemetry")
+    sync.add_argument("--run-id", type=str, default=None, help="Optional run id (UUID recommended).")
+    sync.add_argument("--emit-events", action="store_true", help="Emit JSONL events to stdout for live dashboards.")
+    sync.add_argument("--state-file", type=str, default=None, help="Write run state JSON after each site.")
+    sync.add_argument("--summary-out", type=str, default=None, help="Write aggregated summary JSON after each site.")
+    sync.add_argument("--explorer-out", type=str, default=None, help="Write explorer JSONL (or JSON) for dashboard browsing.")
 
     # ---------------------------
     # NEW: Website prefilter
@@ -261,11 +285,138 @@ async def _prefilter_sites(args: argparse.Namespace, sites: list[dict[str, Any]]
     return kept
 
 
+def _origin_for_site(site: str) -> str | None:
+    s = site.strip()
+    if not s:
+        return None
+    if "://" not in s:
+        s = "https://" + s
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(s)
+        if not p.hostname:
+            return None
+        scheme = p.scheme or "https"
+        return f"{scheme}://{p.hostname}"
+    except Exception:
+        return None
+
+
+async def _crux_has_record(
+    session: aiohttp.ClientSession,
+    *,
+    api_key: str,
+    origin: str,
+    timeout_ms: int,
+) -> tuple[bool, int | None, str | None]:
+    url = f"{_CRUX_ENDPOINT}?key={api_key}"
+    timeout = aiohttp.ClientTimeout(total=timeout_ms / 1000)
+    try:
+        async with session.post(url, json={"origin": origin}, timeout=timeout) as resp:
+            status = resp.status
+            if status != 200:
+                return False, status, None
+            data = await resp.json()
+            return bool(data.get("record")), status, None
+    except Exception:
+        return False, None, "exception"
+
+
+async def _crux_filter_sites(args: argparse.Namespace, sites: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    api_key = args.crux_api_key or os.getenv("CRUX_API_KEY")
+    if not api_key:
+        warn("CrUX filter requested but no API key provided. Skipping CrUX filter.")
+        return sites
+
+    sem = asyncio.Semaphore(max(1, int(args.crux_concurrency)))
+    headers = {"Content-Type": "application/json"}
+    cache: dict[str, bool] = {}
+    status_counts: dict[str, int] = {}
+    restricted_hits: dict[str, int] = {}
+
+    async with aiohttp.ClientSession(headers=headers) as session:
+        async def check_one(rec: dict[str, Any]) -> tuple[dict[str, Any], bool]:
+            async with sem:
+                dom = str(rec["site"]).strip()
+                origin = _origin_for_site(dom)
+                if not origin:
+                    return rec, False
+                if origin in cache:
+                    return rec, cache[origin]
+                ok, status, err = await _crux_has_record(
+                    session,
+                    api_key=api_key,
+                    origin=origin,
+                    timeout_ms=int(args.crux_timeout_ms),
+                )
+                if status is not None:
+                    status_counts[str(status)] = status_counts.get(str(status), 0) + 1
+                    if status in (401, 403, 429):
+                        restricted_hits[origin] = restricted_hits.get(origin, 0) + 1
+                elif err:
+                    status_counts[err] = status_counts.get(err, 0) + 1
+
+                if (not ok) and args.crux_allow_http and origin.startswith("https://"):
+                    origin_http = "http://" + origin[len("https://") :]
+                    ok, status, err = await _crux_has_record(
+                        session,
+                        api_key=api_key,
+                        origin=origin_http,
+                        timeout_ms=int(args.crux_timeout_ms),
+                    )
+                    if status is not None:
+                        status_counts[str(status)] = status_counts.get(str(status), 0) + 1
+                        if status in (401, 403, 429):
+                            restricted_hits[origin_http] = restricted_hits.get(origin_http, 0) + 1
+                    elif err:
+                        status_counts[err] = status_counts.get(err, 0) + 1
+                cache[origin] = ok
+                return rec, ok
+
+        results = await asyncio.gather(*(check_one(r) for r in sites))
+        kept = [rec for (rec, ok) in results if ok]
+
+    log(f"CrUX filter: kept {len(kept)}/{len(sites)} sites present in CrUX dataset.")
+    if status_counts:
+        log(f"CrUX filter status counts: {status_counts}")
+    if restricted_hits:
+        sample = ", ".join(list(restricted_hits.keys())[:5])
+        warn(f"CrUX filter saw restricted responses (401/403/429). Sample origins: {sample}")
+    return kept
+
+
 async def _run(args: argparse.Namespace) -> None:
+    run_id = args.run_id or str(uuid.uuid4())
     tracker_radar = TrackerRadarIndex(args.tracker_radar_index) if args.tracker_radar_index else None
     sites = _load_input_sites(args)
 
+    def emit_event(evt: dict[str, Any]) -> None:
+        if not args.emit_events:
+            return
+        sys.stdout.write(json.dumps(evt, ensure_ascii=False) + "\n")
+        sys.stdout.flush()
+
     log(f"Loaded {len(sites)} sites.")
+    emit_event({
+        "type": "run_stage",
+        "run_id": run_id,
+        "stage": "input_loaded",
+        "total_sites": len(sites),
+        "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+    })
+
+    if args.crux_filter:
+        try:
+            sites = await _crux_filter_sites(args, sites)
+            emit_event({
+                "type": "run_stage",
+                "run_id": run_id,
+                "stage": "crux_filtered",
+                "kept_sites": len(sites),
+                "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+            })
+        except Exception as e:
+            warn(f"CrUX filter failed unexpectedly; continuing without it. Error: {e}")
 
     # ---------------------------
     # NEW: Prefilter stage
@@ -273,6 +424,13 @@ async def _run(args: argparse.Namespace) -> None:
     if args.prefilter_websites:
         try:
             sites = await _prefilter_sites(args, sites)
+            emit_event({
+                "type": "run_stage",
+                "run_id": run_id,
+                "stage": "prefilter_done",
+                "kept_sites": len(sites),
+                "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+            })
         except Exception as e:
             warn(f"Prefilter failed unexpectedly; continuing without prefilter. Error: {e}")
 
@@ -281,8 +439,29 @@ async def _run(args: argparse.Namespace) -> None:
         args.concurrency = 1
     if not tracker_radar:
         warn("No --tracker-radar-index provided. Third-party domains will be collected but not mapped to entities/policies.")
+    if args.exclude_same_entity and not tracker_radar:
+        warn("--exclude-same-entity set but no --tracker-radar-index provided. Option will have no effect.")
 
     sem = asyncio.Semaphore(max(1, int(args.concurrency)))
+    write_lock = asyncio.Lock()
+
+    summary = SummaryBuilder(run_id=run_id, total_sites=len(sites))
+    explorer_records: list[dict[str, Any]] = []
+    explorer_is_jsonl = bool(args.explorer_out and str(args.explorer_out).endswith(".jsonl"))
+
+    emit_event({
+        "type": "run_started",
+        "run_id": run_id,
+        "total_sites": len(sites),
+        "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+    })
+
+    emit_event({
+        "type": "run_stage",
+        "run_id": run_id,
+        "stage": "crawl_started",
+        "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+    })
 
     async with Crawl4AIClient(
         browser_type=args.browser,
@@ -300,6 +479,13 @@ async def _run(args: argparse.Namespace) -> None:
                 rank = rec["rank"]
                 site = rec["site"]
                 log(f"Processing {site} (rank={rank})")
+                emit_event({
+                    "type": "site_started",
+                    "run_id": run_id,
+                    "site": site,
+                    "rank": rank,
+                    "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+                })
                 try:
                     result = await process_site(
                         client,
@@ -310,6 +496,16 @@ async def _run(args: argparse.Namespace) -> None:
                         fetch_third_party_policies=not args.no_third_party_policy_fetch,
                         third_party_policy_max=args.third_party_policy_max,
                         third_party_engine=args.third_party_engine,
+                        run_id=run_id,
+                        exclude_same_entity=bool(args.exclude_same_entity),
+                        stage_callback=lambda stage: emit_event({
+                            "type": "site_stage",
+                            "run_id": run_id,
+                            "site": site,
+                            "rank": rank,
+                            "stage": stage,
+                            "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+                        }),
                     )
                 except Exception as e:
                     warn(f"Unhandled error for {site}: {e}")
@@ -318,14 +514,76 @@ async def _run(args: argparse.Namespace) -> None:
                         "input": site,
                         "status": "exception",
                         "error_message": str(e),
+                        "run_id": run_id,
                     }
 
-                append_jsonl(args.out, result)
+                async with write_lock:
+                    if args.skip_home_fetch_failed and result.get("status") == "home_fetch_failed":
+                        warn(f"Skipping {site} due to home_fetch_failed.")
+                    else:
+                        append_jsonl(args.out, result)
+
+                    if not (args.skip_home_fetch_failed and result.get("status") == "home_fetch_failed"):
+                        summary.update(result)
+
+                    if args.explorer_out and not (args.skip_home_fetch_failed and result.get("status") == "home_fetch_failed"):
+                        explorer_rec = site_to_explorer_record(result)
+                        if explorer_is_jsonl:
+                            append_jsonl(args.explorer_out, explorer_rec)
+                        else:
+                            explorer_records.append(explorer_rec)
+
+                    if args.summary_out:
+                        write_json(args.summary_out, summary.to_summary())
+
+                    if args.state_file:
+                        write_json(args.state_file, {
+                            "run_id": run_id,
+                            "total_sites": len(sites),
+                            "processed_sites": summary.processed_sites,
+                            "status_counts": dict(summary.status_counts),
+                            "third_party": {
+                                "total": summary.third_party_total,
+                                "mapped": summary.third_party_mapped,
+                                "unmapped": summary.third_party_unmapped,
+                                "no_policy_url": summary.third_party_no_policy_url,
+                            },
+                            "updated_at": summary.updated_at,
+                        })
+
+                emit_event({
+                    "type": "site_finished",
+                    "run_id": run_id,
+                    "site": site,
+                    "rank": rank,
+                    "status": result.get("status"),
+                    "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+                })
+
+                emit_event({
+                    "type": "run_progress",
+                    "run_id": run_id,
+                    "processed": summary.processed_sites,
+                    "total": len(sites),
+                    "status_counts": dict(summary.status_counts),
+                    "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+                })
 
                 if result.get("status") != "ok":
                     warn(f"FAILED {site}: {result.get('status')}")
 
         await asyncio.gather(*[worker(r) for r in sites])
+
+    if args.explorer_out and not explorer_is_jsonl:
+        write_json(args.explorer_out, explorer_records)
+
+    emit_event({
+        "type": "run_completed",
+        "run_id": run_id,
+        "processed": summary.processed_sites,
+        "total": len(sites),
+        "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+    })
 
 
 def main() -> None:

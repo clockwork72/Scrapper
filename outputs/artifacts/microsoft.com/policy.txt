@@ -23,7 +23,6 @@ Privacy
       * [Support](https://support.microsoft.com/en-gb)
     * Software Software
       * [Windows Apps](https://apps.microsoft.com/home)
-      * [AI](https://www.microsoft.com/en-gb/ai)
       * [OneDrive](https://www.microsoft.com/en-gb/microsoft-365/onedrive/online-cloud-storage)
       * [Outlook](https://www.microsoft.com/en-gb/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook)
       * [Moving from Skype to Teams](https://support.microsoft.com/en-gb/office/moving-from-skype-to-microsoft-teams-free-3c0caa26-d9db-4179-bcb3-930ae2c87570?icid=DSM_All_Skype)
@@ -38,11 +37,11 @@ Privacy
       * [Xbox games](https://www.microsoft.com/en-gb/store/top-paid/games/xbox)
       * [PC games](https://apps.microsoft.com/games)
     * Business Business
+      * [Microsoft AI](https://www.microsoft.com/en-gb/ai?icid=DSM_All_AI)
       * [Microsoft Security](https://www.microsoft.com/en-gb/security)
       * [Azure](https://azure.microsoft.com/en-gb/)
       * [Dynamics 365](https://www.microsoft.com/en-gb/dynamics-365)
       * [Microsoft 365 for business](https://www.microsoft.com/en-gb/microsoft-365/business)
-      * [Microsoft Industry](https://www.microsoft.com/en-gb/industry)
       * [Microsoft Power Platform](https://www.microsoft.com/en-gb/power-platform)
       * [Windows 365](https://www.microsoft.com/en-gb/windows-365)
     * Developer & IT  Developer & IT 
@@ -135,6 +134,7 @@ Education
 
 
 Business
+  * [Microsoft AI](https://www.microsoft.com/en-gb/ai?icid=DSM_Footer_AI)
   * [Microsoft Security](https://www.microsoft.com/en-gb/security)
   * [Azure](https://azure.microsoft.com/en-gb/)
   * [Dynamics 365](https://www.microsoft.com/en-gb/dynamics-365)

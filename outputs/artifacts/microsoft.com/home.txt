@@ -15,7 +15,6 @@
       * [Support technique](https://support.microsoft.com/fr-fr?icid=DSM_TopNav_Support)
     * Software Software
       * [Applications Windows](https://apps.microsoft.com/home)
-      * [IA](https://www.microsoft.com/fr/ai)
       * [OneDrive](https://www.microsoft.com/fr/microsoft-365/onedrive/online-cloud-storage)
       * [Outlook](https://www.microsoft.com/fr/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook)
       * [Passage de Skype à Teams](https://support.microsoft.com/fr-fr/office/passer-de-skype-%C3%A0-microsoft-teams-gratuit-3c0caa26-d9db-4179-bcb3-930ae2c87570?icid=DSM_All_Skype)
@@ -27,11 +26,11 @@
       * [Xbox et jeux](https://www.xbox.com/)
       * [Jeux PC](https://apps.microsoft.com/games?hl=fr-ma&gl=ma&icid=DSM_All_PCGames)
     * Entreprises Entreprises
+      * [Microsoft AI](https://www.microsoft.com/fr/ai?icid=DSM_All_AI)
       * [Sécurité Microsoft](https://www.microsoft.com/fr/security)
       * [Azure](https://azure.microsoft.com/)
       * [Dynamics 365](https://www.microsoft.com/fr/dynamics-365)
       * [Microsoft 365 pour les entreprises](https://www.microsoft.com/fr/microsoft-365/business)
-      * [Microsoft Industry](https://www.microsoft.com/fr/industry)
       * [Microsoft Power Platform](https://www.microsoft.com/fr/power-platform)
       * [Windows 365](https://www.microsoft.com/fr/windows-365)
     * Développeurs & IT  Développeurs & IT 
@@ -54,7 +53,7 @@
 
 
 Annuler [ 0 Panier 0 articles dans le panier ](https://www.microsoft.com/fr-ma/store/cart)
-[](https://www.microsoft.com/cascadeauth/store/account/signin?ru=https%3A%2F%2Fwww.microsoft.com%2Ffr-ma%2F)
+[Connectez-vous à votre compte](https://www.microsoft.com/cascadeauth/store/account/signin?ru=https%3A%2F%2Fwww.microsoft.com%2Ffr-ma)
 ![Diverses applications incluses dans un abonnement Microsoft 365, telles que : Microsoft Copilot, Word, Excel, PowerPoint, Outlook, OneNote, OneDrive, Microsoft Defender, Microsoft Teams, Microsoft Designer, Clipchamp.](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Content-Card-M365-Icon-Bounce-Premium?wid=406&hei=230&fit=crop&resSharp=1)
 ##  Microsoft 365 
 Découvrez Microsoft 365 Premium : des limites d’utilisation maximales et des fonctionnalités Copilot exclusives, conçues pour les utilisateurs intensifs de l’IA. 
@@ -76,24 +75,24 @@ Sauvegardez vos fichiers et photos sur OneDrive pour y accéder depuis n’impor
 ###  Microsoft 365 Copilot 
 Gagnez du temps et concentrez-vous sur ce qui compte vraiment grâce à l’IA dans Microsoft 365 pour les entreprises. 
 [ En savoir plus ](https://www.microsoft.com/fr/microsoft-365-copilot?icid=mscom_marcom_CPW1a_M365forBusiness_Copilot)
-![Icône de Visual Studio.](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Content-Card-Visual-Studio-Icon?wid=406&hei=230&fit=crop&resSharp=1)
-###  Visual Studio 2022 
-Bénéficiez de l’IDE le plus complet pour les développeurs .NET et C++ sur Windows pour créer des sites Web, un cloud, des ordinateurs de bureau, des applications mobiles, des services et des jeux. 
-[ Téléchargez Visual Studio 2022 ](https://visualstudio.microsoft.com/downloads/?icid=mscom_marcom_CPW2a_VisualStudio22)
+![Un appel vidéo Microsoft Teams.](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Content-Card-Microsoft-Teams-Commercial-Meeting?fmt=png-alpha&wid=406&hei=230&fit=crop&resSharp=1)
+###  Obtenir Teams pour votre entreprise 
+Réunions en ligne, discussion, collaboration en temps réel et stockage cloud partagé, le tout en un seul endroit. 
+[ Trouvez le bon plan pour votre entreprise ](https://www.microsoft.com/fr/microsoft-teams/small-medium-business?icid=mscom_marcom_CPW2a_TeamsForBusiness)
 ![Une femme chez elle accédant aux services Cloud de Windows 365](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/JIC-DPS-CP01?wid=406&hei=230&fit=crop&resSharp=1)
 ###  Bienvenue sur votre PC Windows 365 Cloud 
 Profitez de l’expérience Windows depuis le Cloud Microsoft sur tous vos appareils. 
 [ À obtenir dès aujourd’hui ](https://www.microsoft.com/fr-ww/windows-365?icid=mscom_marcom_CPW3a_Windows365)
-![Un appel vidéo Microsoft Teams.](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Content-Card-Microsoft-Teams-Commercial-Meeting?wid=406&hei=230&fit=crop&resSharp=1)
-###  Obtenir Teams pour votre entreprise 
-Réunions en ligne, discussion, collaboration en temps réel et stockage cloud partagé, le tout en un seul endroit. 
-[ Trouvez le bon plan pour votre entreprise ](https://www.microsoft.com/fr/microsoft-teams/small-medium-business?icid=mscom_marcom_CPW4a_TeamsForBusiness)
+![Icône de Visual Studio.](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Content-Card-Visual-Studio-Icon?wid=406&hei=230&fit=crop&resSharp=1)
+###  Visual Studio 2026 
+Bénéficiez de l’IDE le plus complet pour les développeurs .NET et C++ sur Windows pour créer des sites Web, un cloud, des ordinateurs de bureau, des applications mobiles, des services et des jeux. 
+[ Téléchargez Visual Studio 2026 ](https://visualstudio.microsoft.com/downloads/?icid=mscom_marcom_CPW4a_VisualStudio26)
 ##  Suivre Microsoft 
   * [ ![Facebook](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Facebook%202x?scl=1) ](https://www.facebook.com/Microsoft)
   * [ ![LinkedIn](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Linkedin%202x?scl=1) ](https://www.linkedin.com/company/microsoft)
 
 
-[ ](https://www.microsoft.com/fr-ma/#page-top)
+[ ](https://www.microsoft.com/fr-ma#page-top)
 Nouveautés
   * [Copilot pour les organisations](https://www.microsoft.com/fr/microsoft-copilot/organizations?icid=DSM_Footer_CopilotOrganizations)
   * [Copilot pour une utilisation personnelle](https://www.microsoft.com/fr/microsoft-copilot/for-individuals?form=MY02PT&OCID=GE_web_Copilot_Free_868g3t5nj)
@@ -120,6 +119,7 @@ Boutique & Support
 
 
 Entreprises
+  * [Microsoft AI](https://www.microsoft.com/fr/ai?icid=DSM_Footer_AI)
   * [Sécurité Microsoft](https://www.microsoft.com/fr/security)
   * [Azure](https://azure.microsoft.com/)
   * [Dynamics 365](https://www.microsoft.com/fr/dynamics-365)
@@ -149,7 +149,7 @@ Société
 [Français (Maroc)](https://www.microsoft.com/fr-ma/locale) [ Vos choix en matière de confidentialité – Icône Désactiver Vos choix de confidentialité ](https://aka.ms/yourcaliforniaprivacychoices) [ Confidentialité de l’intégrité des consommateurs ](https://go.microsoft.com/fwlink/?linkid=2259814)
   * [Contacter Microsoft](https://support.microsoft.com/contactus)
   * [Confidentialité](https://go.microsoft.com/fwlink/?LinkId=521839)
-  * [Gérer les cookies](https://www.microsoft.com/fr-ma/)
+  * [Gérer les cookies](https://www.microsoft.com/fr-ma)
   * [Conditions d'utilisation ](https://go.microsoft.com/fwlink/?LinkID=206977)
   * [Marques](https://go.microsoft.com/fwlink/?linkid=2196228)
   * [À propos de nos annonces](https://choice.microsoft.com)

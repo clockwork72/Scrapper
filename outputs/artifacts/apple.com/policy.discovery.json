@@ -18,14 +18,6 @@
       "is_same_site": true
     },
     {
-      "url": "https://support.apple.com/ht211924?cid=mc-ols-icloud-article_ht211924-ios_ui-08182023",
-      "anchor_text": "here",
-      "score": 0.8,
-      "source": "footer",
-      "candidate_etld1": "apple.com",
-      "is_same_site": true
-    },
-    {
       "url": "https://support.apple.com/kb/HT209218",
       "anchor_text": "support.apple.com/kb/HT209218",
       "score": 0.8,
@@ -196,6 +188,14 @@
     {
       "url": "https://apple.com/apple-news/",
       "anchor_text": "Apple News+",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "apple.com",
+      "is_same_site": true
+    },
+    {
+      "url": "https://apple.com/apple-podcasts/",
+      "anchor_text": "Apple Podcasts",
       "score": 0.8,
       "source": "footer",
       "candidate_etld1": "apple.com",

@@ -1,0 +1,136 @@
+from __future__ import annotations
+
+from collections import Counter
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Any
+
+@dataclass
+class SummaryBuilder:
+    run_id: str
+    total_sites: int
+    processed_sites: int = 0
+    status_counts: Counter = field(default_factory=Counter)
+    third_party_total: int = 0
+    third_party_mapped: int = 0
+    third_party_unmapped: int = 0
+    third_party_no_policy_url: int = 0
+    category_counts: Counter = field(default_factory=Counter)
+    entity_counts: Counter = field(default_factory=Counter)
+    entity_prevalence_sum: dict[str, float] = field(default_factory=dict)
+    entity_prevalence_max: dict[str, float] = field(default_factory=dict)
+    entity_categories: dict[str, Counter] = field(default_factory=dict)
+    started_at: str = field(default_factory=lambda: datetime.utcnow().isoformat(timespec="seconds") + "Z")
+    updated_at: str | None = None
+
+    def update(self, result: dict[str, Any]) -> None:
+        self.processed_sites += 1
+        status = str(result.get("status") or "unknown")
+        self.status_counts[status] += 1
+
+        third_parties = result.get("third_parties") or []
+        for tp in third_parties:
+            if not isinstance(tp, dict):
+                continue
+            self.third_party_total += 1
+            mapped = bool(
+                tp.get("tracker_radar_source_domain_file")
+                or tp.get("entity")
+                or tp.get("policy_url")
+                or tp.get("prevalence")
+                or (tp.get("categories") or [])
+            )
+            if mapped:
+                self.third_party_mapped += 1
+            else:
+                self.third_party_unmapped += 1
+
+            if mapped and not tp.get("policy_url"):
+                self.third_party_no_policy_url += 1
+
+            for cat in tp.get("categories") or []:
+                if isinstance(cat, str) and cat.strip():
+                    self.category_counts[cat] += 1
+
+            entity = tp.get("entity")
+            if isinstance(entity, str) and entity.strip():
+                self.entity_counts[entity] += 1
+                prev = tp.get("prevalence")
+                if isinstance(prev, (int, float)):
+                    self.entity_prevalence_sum[entity] = self.entity_prevalence_sum.get(entity, 0.0) + float(prev)
+                    self.entity_prevalence_max[entity] = max(self.entity_prevalence_max.get(entity, 0.0), float(prev))
+                cats = [c for c in (tp.get("categories") or []) if isinstance(c, str) and c.strip()]
+                if cats:
+                    if entity not in self.entity_categories:
+                        self.entity_categories[entity] = Counter()
+                    self.entity_categories[entity].update(cats)
+
+        self.updated_at = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+
+    def to_summary(self) -> dict[str, Any]:
+        success = self.status_counts.get("ok", 0)
+        success_rate = round((success / self.processed_sites) * 100, 2) if self.processed_sites else 0.0
+
+        categories = [
+            {"name": name, "count": count}
+            for name, count in self.category_counts.most_common(20)
+        ]
+
+        entities = []
+        for name, count in self.entity_counts.most_common(20):
+            prev_avg = None
+            prev_max = None
+            if name in self.entity_prevalence_sum:
+                prev_avg = self.entity_prevalence_sum[name] / max(1, self.entity_counts.get(name, 1))
+                prev_max = self.entity_prevalence_max.get(name)
+            cats = []
+            if name in self.entity_categories:
+                cats = [c for c, _ in self.entity_categories[name].most_common(3)]
+            entities.append({
+                "name": name,
+                "count": count,
+                "prevalence_avg": prev_avg,
+                "prevalence_max": prev_max,
+                "categories": cats,
+            })
+
+        return {
+            "run_id": self.run_id,
+            "total_sites": self.total_sites,
+            "processed_sites": self.processed_sites,
+            "success_rate": success_rate,
+            "status_counts": dict(self.status_counts),
+            "third_party": {
+                "total": self.third_party_total,
+                "mapped": self.third_party_mapped,
+                "unmapped": self.third_party_unmapped,
+                "no_policy_url": self.third_party_no_policy_url,
+            },
+            "categories": categories,
+            "entities": entities,
+            "started_at": self.started_at,
+            "updated_at": self.updated_at,
+        }
+
+
+def site_to_explorer_record(result: dict[str, Any]) -> dict[str, Any]:
+    first_party_policy = result.get("first_party_policy") or {}
+    third_parties_out: list[dict[str, Any]] = []
+    for tp in result.get("third_parties") or []:
+        if not isinstance(tp, dict):
+            continue
+        third_parties_out.append({
+            "name": tp.get("third_party_etld1"),
+            "policyUrl": tp.get("policy_url"),
+            "entity": tp.get("entity"),
+            "categories": tp.get("categories") or [],
+            "prevalence": tp.get("prevalence"),
+        })
+
+    return {
+        "rank": result.get("rank"),
+        "site": result.get("site_etld1") or result.get("input"),
+        "status": result.get("status"),
+        "policyUrl": first_party_policy.get("url"),
+        "thirdParties": third_parties_out,
+    }

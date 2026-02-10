@@ -23,7 +23,6 @@ Privacy
       * [Support](https://support.microsoft.com/en-us)
     * Software Software
       * [Windows Apps](https://apps.microsoft.com/home)
-      * [AI](https://www.microsoft.com/en-us/ai)
       * [Outlook](https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook)
       * [OneDrive](https://www.microsoft.com/en-us/microsoft-365/onedrive/online-cloud-storage)
       * [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams/group-chat-software)
@@ -43,12 +42,12 @@ Privacy
       * [Xbox games](https://www.microsoft.com/en-us/store/b/xboxgames?icid=CNavGamesXboxGames)
       * [PC games](https://apps.microsoft.com/games)
     * Business Business
+      * [Microsoft AI](https://www.microsoft.com/en-us/ai?icid=DSM_All_AI)
       * [Microsoft Security](https://www.microsoft.com/en-us/security)
       * [Dynamics 365](https://www.microsoft.com/en-us/dynamics-365)
       * [Microsoft 365 for business](https://www.microsoft.com/en-us/microsoft-365/business)
       * [Microsoft Power Platform](https://www.microsoft.com/en-us/power-platform)
       * [Windows 365](https://www.microsoft.com/en-us/windows-365)
-      * [Microsoft Industry](https://www.microsoft.com/en-us/industry)
       * [Small Business](https://www.microsoft.com/en-us/store/b/business?icid=CNavBusinessStore)
     * Developer & IT  Developer & IT 
       * [Azure](https://azure.microsoft.com/en-us/)

@@ -2,6 +2,14 @@
   "site_etld1": "microsoft.com",
   "candidates_top": [
     {
+      "url": "https://aka.ms/yourcaliforniaprivacychoices",
+      "anchor_text": "Vos choix en matière de confidentialité – Icône Désactiver Vos choix de confidentialité",
+      "score": 8.2,
+      "source": "footer",
+      "candidate_etld1": "aka.ms",
+      "is_same_site": false
+    },
+    {
       "url": "https://go.microsoft.com/fwlink/?linkid=2259814",
       "anchor_text": "Confidentialité de l’intégrité des consommateurs",
       "score": 4.8,
@@ -130,6 +138,14 @@
       "is_same_site": true
     },
     {
+      "url": "https://www.microsoft.com/fr/ai?icid=DSM_Footer_AI",
+      "anchor_text": "Microsoft AI",
+      "score": 0.8,
+      "source": "footer",
+      "candidate_etld1": "microsoft.com",
+      "is_same_site": true
+    },
+    {
       "url": "https://www.microsoft.com/fr/security",
       "anchor_text": "Sécurité Microsoft",
       "score": 0.8,
@@ -184,25 +200,22 @@
       "source": "footer",
       "candidate_etld1": "microsoft.com",
       "is_same_site": true
-    },
-    {
-      "url": "https://developer.microsoft.com/fr-fr/?icid=DSM_Footer_Developer_Developer",
-      "anchor_text": "Développeur Microsoft",
-      "score": 0.8,
-      "source": "footer",
-      "candidate_etld1": "microsoft.com",
-      "is_same_site": true
-    },
-    {
-      "url": "https://learn.microsoft.com/",
-      "anchor_text": "Microsoft Learn",
-      "score": 0.8,
-      "source": "footer",
-      "candidate_etld1": "microsoft.com",
-      "is_same_site": true
     }
   ],
   "tried": [
+    {
+      "url": "https://aka.ms/yourcaliforniaprivacychoices",
+      "anchor_text": "Vos choix en matière de confidentialité – Icône Désactiver Vos choix de confidentialité",
+      "score": 8.2,
+      "source": "footer",
+      "candidate_etld1": "aka.ms",
+      "is_same_site": false,
+      "fetch_success": true,
+      "status_code": 301,
+      "error_message": "",
+      "text_len": 2066,
+      "likeliness_score": 1.81
+    },
     {
       "url": "https://go.microsoft.com/fwlink/?linkid=2259814",
       "anchor_text": "Confidentialité de l’intégrité des consommateurs",
@@ -213,8 +226,8 @@
       "fetch_success": true,
       "status_code": 302,
       "error_message": "",
-      "text_len": 18581,
-      "likeliness_score": 6.727499999999999
+      "text_len": 18610,
+      "likeliness_score": 6.73
     }
   ],
   "chosen": {
@@ -225,7 +238,7 @@
     "candidate_etld1": "microsoft.com",
     "is_same_site": true,
     "status_code": 302,
-    "text_len": 18581,
-    "likeliness_score": 6.727499999999999
+    "text_len": 18610,
+    "likeliness_score": 6.73
   }
 }
