@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["operations", "nonextractable_notes"],
+  "properties": {
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "op_id",
+          "action",
+          "subject",
+          "purposes",
+          "context",
+          "view",
+          "evidence_spans"
+        ],
+        "properties": {
+          "op_id": {"type": "string"},
+          "action": {
+            "type": "object",
+            "required": ["label", "evidence"],
+            "properties": {
+              "label": {"type": "string"},
+              "evidence": {"type": "string"}
+            }
+          },
+          "subject": {
+            "type": "object",
+            "required": ["label", "evidence"],
+            "properties": {
+              "label": {"type": "string"},
+              "evidence": {"type": "string"}
+            }
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "evidence"],
+              "properties": {
+                "label": {"type": "string"},
+                "evidence": {"type": "string"}
+              }
+            }
+          },
+          "context": {"type": "object"},
+          "view": {
+            "type": "object",
+            "required": ["label", "evidence"],
+            "properties": {
+              "label": {"type": "string"},
+              "evidence": {"type": "string"}
+            }
+          },
+          "evidence_spans": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["quote", "char_start", "char_end"],
+              "properties": {
+                "quote": {"type": "string"},
+                "char_start": {"type": "number"},
+                "char_end": {"type": "number"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "nonextractable_notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

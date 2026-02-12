@@ -1,0 +1,16 @@
+{
+  "version": "0.1",
+  "terms": [
+    {"id": "data:device_identifier", "preferred_label": "device_identifier", "alt_labels": ["device id", "device identifiers"], "parent_id": null},
+    {"id": "data:advertising_id", "preferred_label": "advertising_id", "alt_labels": ["ad id", "ad identifier"], "parent_id": "data:device_identifier"},
+    {"id": "data:cookie_id", "preferred_label": "cookie_id", "alt_labels": ["cookie", "cookie identifier"], "parent_id": "data:device_identifier"},
+    {"id": "data:ip_address", "preferred_label": "ip_address", "alt_labels": ["ip", "ip address"], "parent_id": "data:device_identifier"},
+    {"id": "data:precise_location", "preferred_label": "precise_location", "alt_labels": ["precise geolocation"], "parent_id": null},
+    {"id": "data:coarse_location", "preferred_label": "coarse_location", "alt_labels": ["approximate location", "city-level"], "parent_id": "data:precise_location"},
+    {"id": "data:email", "preferred_label": "email", "alt_labels": ["email address"], "parent_id": null},
+    {"id": "data:phone", "preferred_label": "phone", "alt_labels": ["phone number"], "parent_id": null},
+    {"id": "data:payment", "preferred_label": "payment", "alt_labels": ["payment info", "billing"], "parent_id": null},
+    {"id": "data:usage", "preferred_label": "usage", "alt_labels": ["usage data", "activity"], "parent_id": null},
+    {"id": "data:content", "preferred_label": "content", "alt_labels": ["user content", "messages"], "parent_id": null}
+  ]
+}

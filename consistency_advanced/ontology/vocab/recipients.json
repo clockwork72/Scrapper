@@ -1,0 +1,10 @@
+{
+  "version": "0.1",
+  "terms": [
+    {"id": "recipient:partner", "preferred_label": "partners", "alt_labels": ["partners", "trusted partners"], "parent_id": null},
+    {"id": "recipient:service_provider", "preferred_label": "service_provider", "alt_labels": ["vendor", "processor", "sub-processor"], "parent_id": "recipient:partner"},
+    {"id": "recipient:analytics_provider", "preferred_label": "analytics_provider", "alt_labels": ["analytics partner"], "parent_id": "recipient:partner"},
+    {"id": "recipient:advertising_partner", "preferred_label": "advertising_partner", "alt_labels": ["ad partner", "advertiser"], "parent_id": "recipient:partner"},
+    {"id": "recipient:named_third_party", "preferred_label": "named_third_party", "alt_labels": ["named third party", "specific partner"], "parent_id": null}
+  ]
+}

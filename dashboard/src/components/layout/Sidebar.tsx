@@ -101,7 +101,7 @@ export function Sidebar({ activeNav, onSelect }: SidebarProps) {
           </button>
         ))}
       </nav>
-      <div className="text-[10px] text-[var(--muted-text)]">v0.1</div>
+      <div className="text-[10px] text-[var(--muted-text)]">v0.9</div>
     </aside>
   )
 }

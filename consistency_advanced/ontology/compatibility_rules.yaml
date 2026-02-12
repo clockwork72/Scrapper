@@ -1,0 +1,36 @@
+# Legacy aggregate view. Canonical rules live in `ontology/compatibility_rules.json`.
+version: 0.2
+purpose_subsumption:
+  - parent: purpose:analytics
+    child: purpose:product_improvement
+  - parent: purpose:security
+    child: purpose:fraud_prevention
+  - parent: purpose:advertising
+    child: purpose:marketing
+  - parent: purpose:legal
+    child: purpose:compliance
+subject_subsumption:
+  - parent: subject:device_identifier
+    child: subject:advertising_id
+  - parent: subject:device_identifier
+    child: subject:cookie_id
+  - parent: subject:device_identifier
+    child: subject:ip_address
+  - parent: subject:precise_location
+    child: subject:coarse_location
+
+context_compatibility:
+  localisation:
+    - a: ctx:eu_only
+      b: ctx:global
+      compatible: false
+    - a: ctx:us_only
+      b: ctx:global
+      compatible: false
+  temporal:
+    - a: ctx:retention_30_days
+      b: ctx:retention_as_necessary
+      compatible: true
+    - a: ctx:retention_until_account_deletion
+      b: ctx:retention_as_necessary
+      compatible: true

@@ -1,0 +1,12 @@
+{
+  "version": "0.1",
+  "terms": [
+    {"id": "action:collect", "preferred_label": "collect", "alt_labels": ["gather", "obtain", "acquire"]},
+    {"id": "action:use", "preferred_label": "use", "alt_labels": ["process", "utilize"]},
+    {"id": "action:share", "preferred_label": "share_disclose", "alt_labels": ["share", "disclose", "provide", "transfer", "make available"]},
+    {"id": "action:retain", "preferred_label": "retain", "alt_labels": ["store", "keep", "maintain"]},
+    {"id": "action:delete", "preferred_label": "delete", "alt_labels": ["remove", "erase", "destroy"]},
+    {"id": "action:transfer", "preferred_label": "transfer", "alt_labels": ["transmit", "send"]},
+    {"id": "action:sell", "preferred_label": "sell", "alt_labels": ["rent", "lease"]}
+  ]
+}

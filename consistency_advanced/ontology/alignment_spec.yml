@@ -1,0 +1,34 @@
+version: 0.1
+
+# Alignment is used to compare 1P and 3P operations.
+
+operation_signature:
+  # Ordered by importance for matching
+  fields:
+    - data_category
+    - action_family
+    - recipient_family
+    - localisation
+    - temporal_bucket
+
+# Map action families across policy sides.
+# Example: 1P share/disclose often aligns to 3P collect/use/receive.
+action_family_map:
+  one_party:
+    share_disclose: ["action:share"]
+    collect_use: ["action:collect", "action:use"]
+    retain: ["action:retain"]
+  third_party:
+    collect_use: ["action:collect", "action:use"]
+    receive: ["action:collect", "action:use"]
+    retain: ["action:retain"]
+
+comparability_modes:
+  strict:
+    require_localisation_overlap: true
+    require_temporal_compatibility: true
+    allow_unknown_context: false
+  relaxed:
+    require_localisation_overlap: false
+    require_temporal_compatibility: false
+    allow_unknown_context: true

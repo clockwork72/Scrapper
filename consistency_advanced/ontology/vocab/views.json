@@ -1,0 +1,11 @@
+{
+  "version": "0.1",
+  "terms": [
+    {"id": "view:do", "preferred_label": "do", "alt_labels": ["we do", "we will"], "parent_id": null},
+    {"id": "view:may", "preferred_label": "may", "alt_labels": ["we may", "can", "might"], "parent_id": null},
+    {"id": "view:do_not", "preferred_label": "do_not", "alt_labels": ["we do not", "never"], "parent_id": null},
+    {"id": "view:only_if", "preferred_label": "only_if", "alt_labels": ["only if", "provided that"], "parent_id": null},
+    {"id": "view:opt_out", "preferred_label": "opt_out", "alt_labels": ["opt out", "unsubscribe"], "parent_id": null},
+    {"id": "view:required", "preferred_label": "required", "alt_labels": ["must", "required"], "parent_id": null}
+  ]
+}

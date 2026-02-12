@@ -1,0 +1,11 @@
+version: 0.1
+chunking:
+  target_tokens: 1000
+  overlap_percent: 0.12
+models:
+  extractor_model: "TODO"
+  verifier_model: "TODO"
+normalization:
+  use_llm_fallback: true
+reasoning:
+  strict_context_compat: false

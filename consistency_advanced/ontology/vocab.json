@@ -1,0 +1,71 @@
+{
+  "version": "0.2",
+  "actions": [
+    {"uri": "action:collect", "label": "collect"},
+    {"uri": "action:use", "label": "use"},
+    {"uri": "action:share", "label": "share_disclose"},
+    {"uri": "action:retain", "label": "retain"},
+    {"uri": "action:delete", "label": "delete"},
+    {"uri": "action:transfer", "label": "transfer"},
+    {"uri": "action:sell", "label": "sell"},
+    {"uri": "action:combine", "label": "combine"},
+    {"uri": "action:derive", "label": "derive"},
+    {"uri": "action:store", "label": "store"}
+  ],
+  "subjects": [
+    {"uri": "subject:device_identifier", "label": "device_identifier"},
+    {"uri": "subject:advertising_id", "label": "advertising_id", "parent": "subject:device_identifier"},
+    {"uri": "subject:cookie_id", "label": "cookie_id", "parent": "subject:device_identifier"},
+    {"uri": "subject:ip_address", "label": "ip_address", "parent": "subject:device_identifier"},
+    {"uri": "subject:precise_location", "label": "precise_location"},
+    {"uri": "subject:coarse_location", "label": "coarse_location", "parent": "subject:precise_location"},
+    {"uri": "subject:email", "label": "email"},
+    {"uri": "subject:phone", "label": "phone"},
+    {"uri": "subject:payment", "label": "payment"},
+    {"uri": "subject:health", "label": "health"},
+    {"uri": "subject:biometric", "label": "biometric"},
+    {"uri": "subject:content", "label": "content"},
+    {"uri": "subject:usage", "label": "usage"},
+    {"uri": "subject:contacts", "label": "contacts"}
+  ],
+  "purposes": [
+    {"uri": "purpose:analytics", "label": "analytics"},
+    {"uri": "purpose:security", "label": "security"},
+    {"uri": "purpose:service_provision", "label": "service_provision"},
+    {"uri": "purpose:advertising", "label": "advertising"},
+    {"uri": "purpose:personalization", "label": "personalization"},
+    {"uri": "purpose:legal", "label": "legal"},
+    {"uri": "purpose:marketing", "label": "marketing", "parent": "purpose:advertising"},
+    {"uri": "purpose:fraud_prevention", "label": "fraud_prevention", "parent": "purpose:security"},
+    {"uri": "purpose:product_improvement", "label": "product_improvement", "parent": "purpose:analytics"},
+    {"uri": "purpose:compliance", "label": "compliance", "parent": "purpose:legal"}
+  ],
+  "views": [
+    {"uri": "view:do", "label": "do"},
+    {"uri": "view:may", "label": "may"},
+    {"uri": "view:do_not", "label": "do_not"},
+    {"uri": "view:only_if", "label": "only_if"},
+    {"uri": "view:opt_out", "label": "opt_out"},
+    {"uri": "view:required", "label": "required"}
+  ],
+  "context": {
+    "temporal": [
+      {"uri": "ctx:retention_30_days", "label": "30_days"},
+      {"uri": "ctx:retention_until_account_deletion", "label": "until_account_deletion"},
+      {"uri": "ctx:retention_as_necessary", "label": "as_necessary"}
+    ],
+    "localisation": [
+      {"uri": "ctx:eu_only", "label": "EU_only"},
+      {"uri": "ctx:us_only", "label": "US_only"},
+      {"uri": "ctx:global", "label": "global"}
+    ],
+    "cause": [
+      {"uri": "ctx:feature_enabled", "label": "feature_enabled"},
+      {"uri": "ctx:user_consent", "label": "user_consent"}
+    ],
+    "manner": [
+      {"uri": "ctx:encrypted", "label": "encrypted"},
+      {"uri": "ctx:automatic", "label": "automatic"}
+    ]
+  }
+}
