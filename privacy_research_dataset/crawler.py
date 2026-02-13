@@ -128,6 +128,23 @@ _FOOTER_TOKENS = (
     "your ads privacy choices",
     "all help topics",
 )
+_POLICY_SCAN_FULL_PAGE_DOMAINS = ("onetrust.com", "cookielaw.org", "cookiepro.com")
+
+
+def _url_host(url: str | None) -> str:
+    if not url:
+        return ""
+    try:
+        return (urlparse(url).hostname or "").lower()
+    except Exception:
+        return ""
+
+
+def _should_scan_full_page_policy(url: str | None) -> bool:
+    host = _url_host(url)
+    if not host:
+        return False
+    return any(host == d or host.endswith(f".{d}") for d in _POLICY_SCAN_FULL_PAGE_DOMAINS)
 
 def _safe_dirname(s: str) -> str:
     return "".join(ch if ch.isalnum() or ch in ("-", "_", ".") else "_" for ch in s)[:200]
@@ -470,7 +487,13 @@ async def _fetch_best_policy(
     best_key: tuple[float, int] | None = None
 
     async def try_candidate(c: LinkCandidate) -> dict[str, Any]:
-        res = await client.fetch(c.url, capture_network=False, remove_overlays=True, magic=False, scan_full_page=False)
+        res = await client.fetch(
+            c.url,
+            capture_network=False,
+            remove_overlays=True,
+            magic=False,
+            scan_full_page=_should_scan_full_page_policy(c.url),
+        )
         rec = dict(
             url=c.url,
             anchor_text=c.anchor_text,
@@ -535,7 +558,13 @@ async def _fetch_best_policy(
     if chosen is None and candidates:
         hub_urls = extract_legal_hub_urls(candidates, limit=max_hub_pages)
         for hub in hub_urls:
-            hub_res = await client.fetch(hub, capture_network=False, remove_overlays=True, magic=False)
+            hub_res = await client.fetch(
+                hub,
+                capture_network=False,
+                remove_overlays=True,
+                magic=False,
+                scan_full_page=_should_scan_full_page_policy(hub),
+            )
             if not hub_res.success or not hub_res.cleaned_html:
                 continue
             hub_cands = extract_link_candidates(hub_res.cleaned_html, hub_res.url, site_et)
@@ -800,7 +829,13 @@ async def process_site(
             if third_party_policy_fetcher is not None:
                 res = await third_party_policy_fetcher(purl)
             else:
-                res = await client.fetch(purl, capture_network=False, remove_overlays=True, magic=False)
+                res = await client.fetch(
+                    purl,
+                    capture_network=False,
+                    remove_overlays=True,
+                    magic=False,
+                    scan_full_page=_should_scan_full_page_policy(purl),
+                )
             tp_text_raw = (res.text or "").strip()
             tp_text = _clean_policy_text(tp_text_raw)
             _write_text(tp_dir / "policy.url.txt", purl)

@@ -1,10 +1,8 @@
 import { ipcMain, app, BrowserWindow } from "electron";
-import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
 import { spawn } from "node:child_process";
-createRequire(import.meta.url);
 const __dirname$1 = path.dirname(fileURLToPath(import.meta.url));
 process.env.APP_ROOT = path.join(__dirname$1, "..");
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
@@ -64,53 +62,6 @@ async function getDirectorySize(dirPath) {
     }
   }
   return total;
-}
-async function runPythonJson(script, input) {
-  const pythonCmd = process.env.PRIVACY_DATASET_PYTHON || "python";
-  return await new Promise((resolve) => {
-    let stdout = "";
-    let stderr = "";
-    let settled = false;
-    try {
-      const child = spawn(pythonCmd, ["-c", script], {
-        cwd: REPO_ROOT,
-        env: {
-          ...process.env,
-          PYTHONUNBUFFERED: "1",
-          PYTHONPATH: process.env.PYTHONPATH ? `${REPO_ROOT}${path.delimiter}${process.env.PYTHONPATH}` : REPO_ROOT
-        }
-      });
-      child.stdout.on("data", (chunk) => {
-        stdout += String(chunk);
-      });
-      child.stderr.on("data", (chunk) => {
-        stderr += String(chunk);
-      });
-      child.on("error", (error) => {
-        if (settled) return;
-        settled = true;
-        resolve({ ok: false, error: String(error), stderr });
-      });
-      child.on("close", (code) => {
-        if (settled) return;
-        settled = true;
-        if (code !== 0) {
-          resolve({ ok: false, error: `python_exit_${code}`, stderr: stderr || stdout });
-          return;
-        }
-        try {
-          const data = JSON.parse(stdout || "{}");
-          resolve({ ok: true, data, stderr });
-        } catch (error) {
-          resolve({ ok: false, error: `invalid_python_json:${String(error)}`, stderr: stderr || stdout });
-        }
-      });
-      child.stdin.write(JSON.stringify(input || {}));
-      child.stdin.end();
-    } catch (error) {
-      resolve({ ok: false, error: String(error), stderr });
-    }
-  });
 }
 function createWindow() {
   win = new BrowserWindow({
@@ -256,60 +207,6 @@ ipcMain.handle("scraper:read-artifact-text", async (_event, options) => {
     return { ok: false, error: String(error) };
   }
 });
-ipcMain.handle(
-  "consistency:stage0-preview",
-  async (_event, payload) => {
-    try {
-      const firstPartyText = String((payload == null ? void 0 : payload.firstPartyText) || "");
-      const thirdPartyText = String((payload == null ? void 0 : payload.thirdPartyText) || "");
-      const script = `
-import json, sys
-from consistency_advanced.ingest.segment import clean_policy_text, build_section_tree, build_clause_nodes
-
-def process(key, text):
-    raw = text or ""
-    cleaned = clean_policy_text(raw)
-    sections = build_section_tree(cleaned)
-    clauses = build_clause_nodes(cleaned, policy_id=f"preview_{key}", sections=sections)
-    return {
-        "after_text": cleaned,
-        "raw_chars": len(raw),
-        "clean_chars": len(cleaned),
-        "section_count": len(sections),
-        "clause_count": len(clauses),
-        "sections": [
-            {
-                "section_id": s.section_id,
-                "title": s.title,
-                "level": s.level,
-                "section_path": s.section_path,
-                "start_offset": s.start_offset,
-                "end_offset": s.end_offset
-            }
-            for s in sections[:20]
-        ]
-    }
-
-inp = json.loads(sys.stdin.read() or "{}")
-out = {
-    "first_party": process("fp", inp.get("first_party_text", "")),
-    "third_party": process("tp", inp.get("third_party_text", ""))
-}
-print(json.dumps(out, ensure_ascii=False))
-`;
-      const result = await runPythonJson(script, {
-        first_party_text: firstPartyText,
-        third_party_text: thirdPartyText
-      });
-      if (!result.ok) {
-        return { ok: false, error: result.error, stderr: result.stderr };
-      }
-      return { ok: true, data: result.data };
-    } catch (error) {
-      return { ok: false, error: String(error) };
-    }
-  }
-);
 ipcMain.handle("scraper:folder-size", async (_event, outDir) => {
   try {
     const target = outDir ? path.resolve(REPO_ROOT, outDir) : defaultPaths().outDir;

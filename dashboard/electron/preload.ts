@@ -36,8 +36,6 @@ contextBridge.exposeInMainWorld('scraper', {
   listRuns: (baseOutDir?: string) => ipcRenderer.invoke('scraper:list-runs', baseOutDir),
   openLogWindow: (content: string, title?: string) => ipcRenderer.invoke('scraper:open-log-window', { content, title }),
   openPolicyWindow: (url: string) => ipcRenderer.invoke('scraper:open-policy-window', url),
-  runConsistencyStage0Preview: (payload: { firstPartyText: string; thirdPartyText: string }) =>
-    ipcRenderer.invoke('consistency:stage0-preview', payload),
   onEvent: (callback: (event: any) => void) => ipcRenderer.on('scraper:event', (_evt, data) => callback(data)),
   onLog: (callback: (event: any) => void) => ipcRenderer.on('scraper:log', (_evt, data) => callback(data)),
   onError: (callback: (event: any) => void) => ipcRenderer.on('scraper:error', (_evt, data) => callback(data)),

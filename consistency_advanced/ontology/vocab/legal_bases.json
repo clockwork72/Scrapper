@@ -1,9 +1,0 @@
-{
-  "version": "0.1",
-  "terms": [
-    {"id": "basis:consent", "preferred_label": "consent", "alt_labels": ["with consent", "user consent"], "parent_id": null},
-    {"id": "basis:legitimate_interest", "preferred_label": "legitimate_interest", "alt_labels": ["legitimate interests"], "parent_id": null},
-    {"id": "basis:contract", "preferred_label": "contract", "alt_labels": ["contractual necessity"], "parent_id": null},
-    {"id": "basis:legal_obligation", "preferred_label": "legal_obligation", "alt_labels": ["legal requirement"], "parent_id": null}
-  ]
-}

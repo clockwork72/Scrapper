@@ -29,43 +29,6 @@ declare global {
       listRuns: (baseOutDir?: string) => Promise<{ ok: boolean; error?: string; root?: string; runs?: any[] }>
       openLogWindow: (content: string, title?: string) => Promise<{ ok: boolean; error?: string }>
       openPolicyWindow: (url: string) => Promise<{ ok: boolean; error?: string }>
-      runConsistencyStage0Preview: (payload: { firstPartyText: string; thirdPartyText: string }) => Promise<{
-        ok: boolean
-        error?: string
-        stderr?: string
-        data?: {
-          first_party: {
-            after_text: string
-            raw_chars: number
-            clean_chars: number
-            section_count: number
-            clause_count: number
-            sections: Array<{
-              section_id: string
-              title: string
-              level: number
-              section_path: string
-              start_offset: number
-              end_offset: number
-            }>
-          }
-          third_party: {
-            after_text: string
-            raw_chars: number
-            clean_chars: number
-            section_count: number
-            clause_count: number
-            sections: Array<{
-              section_id: string
-              title: string
-              level: number
-              section_path: string
-              start_offset: number
-              end_offset: number
-            }>
-          }
-        }
-      }>
       onEvent: (callback: (event: any) => void) => void
       onLog: (callback: (event: any) => void) => void
       onError: (callback: (event: any) => void) => void
