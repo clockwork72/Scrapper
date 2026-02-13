@@ -32,6 +32,7 @@ electron.contextBridge.exposeInMainWorld("scraper", {
   listRuns: (baseOutDir) => electron.ipcRenderer.invoke("scraper:list-runs", baseOutDir),
   openLogWindow: (content, title) => electron.ipcRenderer.invoke("scraper:open-log-window", { content, title }),
   openPolicyWindow: (url) => electron.ipcRenderer.invoke("scraper:open-policy-window", url),
+  runConsistencyStage0Preview: (payload) => electron.ipcRenderer.invoke("consistency:stage0-preview", payload),
   onEvent: (callback) => electron.ipcRenderer.on("scraper:event", (_evt, data) => callback(data)),
   onLog: (callback) => electron.ipcRenderer.on("scraper:log", (_evt, data) => callback(data)),
   onError: (callback) => electron.ipcRenderer.on("scraper:error", (_evt, data) => callback(data)),

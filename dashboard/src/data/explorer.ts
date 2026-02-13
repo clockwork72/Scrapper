@@ -1,6 +1,7 @@
 export type ExplorerThirdParty = {
   name: string
   policyUrl: string | null
+  extractionMethod?: string | null
   entity: string | null
   categories: string[]
   prevalence: number | null
@@ -11,6 +12,7 @@ export type ExplorerSite = {
   rank?: number | null
   status: 'ok' | 'policy_not_found' | 'home_fetch_failed' | 'non_browsable'
   policyUrl: string | null
+  extractionMethod?: string | null
   thirdParties: ExplorerThirdParty[]
 }
 

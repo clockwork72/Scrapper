@@ -1,11 +1,57 @@
-version: 0.1
+version: 0.2
+
+stages:
+  - ingest_segment
+  - extract
+  - normalize
+  - graph_build
+  - validate
+  - align_compare
+  - verifier
+  - report
+
+ingest:
+  keep_toc_as_metadata: true
+  clause_min_chars: 8
+
 chunking:
   target_tokens: 1000
   overlap_percent: 0.12
-models:
-  extractor_model: "TODO"
-  verifier_model: "TODO"
-normalization:
-  use_llm_fallback: true
+  min_tokens: 120
+
+extract:
+  mode: bounded_json
+  require_evidence: true
+  null_if_not_explicit: true
+  split_scope: clause_or_paragraph
+  model: gpt-4.1
+
+verifier:
+  mode: llm_optional
+  model: gpt-4.1-mini
+
+normalize:
+  strategy: deterministic_first
+  allow_chooser_fallback: true
+
+validation:
+  require_action_subject: true
+  share_requires_recipient: true
+  allowed_uri_prefixes:
+    - action
+    - subject
+    - purpose
+    - view
+    - recipient
+    - basis
+    - context
+
 reasoning:
   strict_context_compat: false
+  min_alignment_score: 1.25
+  no_finding_without_dual_citations: true
+
+report:
+  include_machine_json: true
+  include_human_text: true
+  include_quotes: true

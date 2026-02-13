@@ -129,16 +129,28 @@ class SummaryBuilder:
 
 def site_to_explorer_record(result: dict[str, Any]) -> dict[str, Any]:
     first_party_policy = result.get("first_party_policy") or {}
+    tp_fetch_methods: dict[str, Any] = {}
+    for rec in result.get("third_party_policy_fetches") or []:
+        if not isinstance(rec, dict):
+            continue
+        key = rec.get("third_party_etld1")
+        if isinstance(key, str) and key:
+            tp_fetch_methods[key] = rec.get("extraction_method")
     third_parties_out: list[dict[str, Any]] = []
     for tp in result.get("third_parties") or []:
         if not isinstance(tp, dict):
             continue
+        tp_name = tp.get("third_party_etld1")
         third_parties_out.append({
-            "name": tp.get("third_party_etld1"),
+            "name": tp_name,
             "policyUrl": tp.get("policy_url"),
             "entity": tp.get("entity"),
             "categories": tp.get("categories") or [],
             "prevalence": tp.get("prevalence"),
+            "extractionMethod": (
+                tp.get("policy_extraction_method")
+                or (tp_fetch_methods.get(tp_name) if isinstance(tp_name, str) else None)
+            ),
         })
 
     return {
@@ -146,5 +158,6 @@ def site_to_explorer_record(result: dict[str, Any]) -> dict[str, Any]:
         "site": result.get("site_etld1") or result.get("input"),
         "status": result.get("status"),
         "policyUrl": first_party_policy.get("url"),
+        "extractionMethod": first_party_policy.get("extraction_method"),
         "thirdParties": third_parties_out,
     }

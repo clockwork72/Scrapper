@@ -1,153 +1,110 @@
-# Advanced Consistency Analysis (Placeholder)
+# Advanced Consistency Analysis
 
-This folder is a **placeholder scaffold** for the next-phase “advanced consistency analysis” system. It mirrors the target architecture and keeps each module **separate and testable**. The goal is to build a robust, scalable pipeline that extracts privacy-policy operations, normalizes them into a canonical ontology, writes an RDF graph with provenance, and produces deterministic compliance findings backed by citations from both policies.
+This module is structured as a provenance-first, ontology-driven pipeline for cross-policy consistency checking.
 
-## Target System Architecture
+## Workflow
 
-Modules (separate, testable):
+The implementation follows this strict stage order:
 
-1. Ingest & segment: PDF/HTML → clean text → section tree → chunks
-2. Extract (LLM): chunk → Operation objects + evidence spans
-3. Normalize: map free-text labels → canonical Action/Subject/Purpose/Context/View URIs
-4. Graph build: write RDF triples + provenance into a graph store
-5. Reason & compare: SPARQL/rules to produce ComplianceFinding + PurposeMismatch
-6. Report: human-readable + machine-readable output with citations
+1. **Ingest & segment** (`ingest/segment.py`)
+2. **Extract** (`extract/llm_extract.py`)
+3. **Normalize** (`normalize/normalize.py`)
+4. **Graph build** (`graph/build_graph.py`)
+5. **Validate** (`validate/constraints.py`)
+6. **Reason & compare** (`reason/compare.py`)
+7. **Verifier gate** (inside reasoning stage)
+8. **Report** (`report/report.py`)
 
-Rule: **No finding without citations from both policies.**
+Orchestration entrypoint:
 
-## Step 0 — Ontology, Made Operational
+- `pipeline/run.py` -> `run_pipeline(...)`
 
-Before any LLM calls, define the controlled vocabulary and hierarchy:
+## Safety / Anti-hallucination Rules
 
-- Action URIs: collect, use, share/disclose, retain, delete, transfer, sell, etc.
-- Subject URIs: device_id, precise_location, email, payment, etc. (with subclasses)
-- Purpose URIs: analytics, security, service_provision, advertising, personalization, legal, etc.
-- View URIs: do, may, do_not, only_if, opt_out, required, etc.
-- Context facets: temporal, localization, cause, manner (with value sets)
+- Extraction is bounded JSON, not free-form prose.
+- Every operation must carry evidence spans.
+- Missing explicit slots are left `null` (not guessed).
+- Validation runs before mismatch logic.
+- No finding is emitted without citations from both policies.
 
-Compatibility rules define the deterministic baseline:
+## Data Contracts
 
-- Purpose subsumption (e.g., personalization ⊄ service_provision)
-- Subject/Data category subsumption (device_identifier ⊇ advertising_id)
-- Context compatibility (EU-only vs global, optional strictness)
+Shared models: `core/models.py`
 
-Step 0 outputs are frozen in `consistency_advanced/ontology/`:
+Important objects:
 
-- `ontology_profile.md`: unit of analysis + field semantics
-- `vocab/`: versioned vocabularies (actions, purposes, data categories, recipients, legal bases, views)
-- `normalization_rules.yml`: deterministic regex/synonym mappings
-- `alignment_spec.yml`: cross-policy alignment semantics
-- `mismatch_predicates.md`: deterministic mismatch definitions
-- `finding_mapping.md`: mismatch → ComplianceFinding mapping
+- `PolicyDocument`, `PolicyChunk`
+- `StatementCandidate`, `OperationCandidate`
+- `NormalizedOperation`
+- `GraphTriple`
+- `ComplianceFinding`
 
-## Long Policy Handling — Structure-First Chunking
+Extractor schema:
 
-1. Parse to a section tree (H1/H2/H3 → paragraphs → bullets → tables).
-2. Chunk per section node; if too long, split within the same section.
-3. Target ~800–1200 tokens per chunk, 10–15% overlap.
-4. Store stable IDs for provenance.
+- `schemas/operation.schema.json`
 
-Every chunk should track:
+## Ontology Assets
 
-- policy_id, party_type (1P/3P), section_path, char_start/end, chunk_hash
+`ontology/` contains the operational ontology profile:
 
-## Extraction Schema (LLM)
+- canonical vocabularies (`vocab/`)
+- compatibility rules
+- alignment spec
+- mismatch definitions
+- finding-class mapping
 
-LLM output should be **strict JSON**, validated by code:
+## Minimal Usage
 
-```json
-{
-  "operations": [
-    {
-      "op_id": "p1_s3_c2_op7",
-      "action": {"label": "share", "evidence": "share"},
-      "subject": {"label": "device identifiers", "evidence": "device identifiers"},
-      "purposes": [{"label": "analytics", "evidence": "analytics"}],
-      "context": {
-        "localisation": {"label": "EU", "evidence": "in the EU"},
-        "temporal": {"label": "30 days", "evidence": "for 30 days"}
-      },
-      "view": {"label": "may", "evidence": "may"},
-      "evidence_spans": [
-        {
-          "quote": "We may share device identifiers with analytics partners...",
-          "char_start": 1234,
-          "char_end": 1320
-        }
-      ]
-    }
-  ],
-  "nonextractable_notes": []
-}
+```python
+from consistency_advanced.pipeline import run_pipeline
+
+result = run_pipeline(
+    first_party_policy_path="outputs/example/first_party.txt",
+    third_party_policy_path="outputs/example/third_party.txt",
+    output_dir="outputs/consistency_run_001",
+)
+
+print(result["summary"])
+print(result["human_report"])
 ```
 
-Critical rules:
+OpenAI-backed extraction + verifier:
 
-- Evidence spans are mandatory (verbatim quote + offsets).
-- If evidence is missing, output nothing (or add a note).
+```python
+from consistency_advanced.pipeline import run_pipeline_openai
 
-## Normalization
-
-- Deterministic dictionary + synonym maps first
-- If ambiguous, LLM chooses from a controlled URI list
-- Store raw_label, normalized_uri, confidence, reason
-
-## RDF + Provenance
-
-Example triples:
-
-```
-:op123 a :Operation
-:op123 :declaredBy :FirstPartyAcme
-:op123 :hasAction :Share
-:op123 :hasSubject :DeviceIdentifier
-:op123 :hasPurpose :Analytics
-:op123 :hasContext :ctx456
-
-:op123 :sourcePolicy :policy1
-:op123 :sourceSectionPath "Sharing > Partners > Analytics"
-:op123 :sourceQuote "We may share device identifiers..."
-:op123 :sourceCharStart 1234
-:op123 :sourceCharEnd 1320
+result = run_pipeline_openai(
+    first_party_policy_path="outputs/example/first_party.txt",
+    third_party_policy_path="outputs/example/third_party.txt",
+    output_dir="outputs/consistency_openai_run",
+    extract_model="gpt-4.1",
+    verifier_model="gpt-4.1-mini",
+)
 ```
 
-## Reasoning Rules
+The OpenAI key is read from `OPENAI_API_KEY` (or `api_key=` argument).
 
-- Align operations by subject/action/context compatibility
-- PurposeMismatch if 3P purposes are not in 1P purpose closure
-- Within-policy contradictions: “do not share” vs “may share”
+Outputs written to `output_dir`:
 
-## Reporting
+- `graph.triples.jsonl`
+- `report.machine.json`
+- `report.human.txt`
+- `summary.json`
 
-Each finding includes:
+## Current Scope
 
-- mismatch type, parties, aligned subject/action/context
-- exact quotes from 1P and 3P with section paths
-- extra/missing purposes
-- confidence and rationale
+Implemented now:
 
-## MVP Order
+- deterministic ingestion/segmentation/chunking
+- bounded extraction fallback (plus LLM backend hook)
+- deterministic normalization
+- provenance-rich graph construction
+- validation checks
+- deterministic alignment + mismatch detection
+- report generation
 
-1. Ingestion + chunking + provenance IDs
-2. Extraction schema + validator + evidence enforcement
-3. Normalization to URIs
-4. RDF graph build
-5. One mismatch type end-to-end (PurposeMismatch)
-6. Report generation
+Planned next:
 
-## Directory Layout
-
-- `ontology/`: canonical vocab + normalization/alignment + mismatch specs
-- `schemas/`: JSON schemas for LLM outputs
-- `ingest/`: policy ingestion + segmentation
-- `extract/`: LLM extraction stubs
-- `normalize/`: normalization layer stubs
-- `graph/`: RDF graph construction stubs
-- `reason/`: SPARQL/rules stubs
-- `report/`: report output stubs
-- `configs/`: pipeline configuration templates
-- `tests/`: test scaffolds
-- `examples/`: sample inputs/outputs
-- `data/`: scratch data for experiments
-
-All modules are placeholders. Implementations will be added incrementally.
+- production LLM extractor + verifier prompts
+- SHACL/SPARQL-native validation and reasoning
+- richer mismatch families (granularity, omission, localisation/temporal variants)

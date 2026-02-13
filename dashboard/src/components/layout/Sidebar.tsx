@@ -52,6 +52,18 @@ const navItems: { id: NavId; label: string; icon: JSX.Element }[] = [
     ),
   },
   {
+    id: 'reasoning',
+    label: 'Reasoning',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M4 6h16" />
+        <path d="M4 12h10" />
+        <path d="M4 18h7" />
+        <circle cx="18" cy="12" r="3" />
+      </svg>
+    ),
+  },
+  {
     id: 'analytics',
     label: 'Chart',
     icon: (

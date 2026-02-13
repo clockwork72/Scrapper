@@ -1,23 +1,39 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ExplorerSite, ExplorerThirdParty } from '../../data/explorer'
+import type { ReasoningSelection } from '../reasoning/ReasoningView'
 
 type ConsistencyCheckerViewProps = {
   hasRun: boolean
   sites?: ExplorerSite[]
   outDir: string
+  showExtractionMethod?: boolean
+  onSendToReasoning?: (selection: ReasoningSelection) => void
 }
 
 function safeDirname(value: string) {
   return value.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 200)
 }
 
-export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyCheckerViewProps) {
+function formatExtractionMethod(value?: string | null) {
+  if (!value) return 'Unknown'
+  return value === 'trafilatura' ? 'Trafilatura' : 'Fallback'
+}
+
+export function ConsistencyCheckerView({
+  hasRun,
+  sites,
+  outDir,
+  showExtractionMethod = true,
+  onSendToReasoning,
+}: ConsistencyCheckerViewProps) {
   const [selectedSiteId, setSelectedSiteId] = useState('')
   const [selectedThirdParty, setSelectedThirdParty] = useState('')
   const [sitePolicyText, setSitePolicyText] = useState('')
   const [thirdPartyPolicyText, setThirdPartyPolicyText] = useState('')
+  const [sitePolicyMethod, setSitePolicyMethod] = useState<string | null>(null)
   const [thirdPartyOptions, setThirdPartyOptions] = useState<ExplorerThirdParty[]>([])
   const [thirdPartyTexts, setThirdPartyTexts] = useState<Record<string, string>>({})
+  const [thirdPartyMethods, setThirdPartyMethods] = useState<Record<string, string | null>>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -81,8 +97,10 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
     if (!selectedSiteId) {
       setSitePolicyText('')
       setThirdPartyPolicyText('')
+      setSitePolicyMethod(null)
       setThirdPartyOptions([])
       setThirdPartyTexts({})
+      setThirdPartyMethods({})
       setSelectedThirdParty('')
       lastLoadRef.current = ''
       return
@@ -104,8 +122,21 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
       if (!sitePolicy?.ok || !sitePolicy.data) {
         setSitePolicyText('')
         setError('First‑party policy text not found for this site.')
+        setSitePolicyMethod(null)
       } else {
         setSitePolicyText(sitePolicy.data)
+        const methodPath = `artifacts/${siteFolder}/policy.extraction.json`
+        const methodRes = await window.scraper?.readArtifactText({ outDir, relativePath: methodPath })
+        if (methodRes?.ok && methodRes.data) {
+          try {
+            const parsed = JSON.parse(methodRes.data)
+            setSitePolicyMethod(typeof parsed?.method === 'string' ? parsed.method : null)
+          } catch {
+            setSitePolicyMethod(null)
+          }
+        } else {
+          setSitePolicyMethod(null)
+        }
       }
 
       const thirdParties: ExplorerThirdParty[] = ((site as any).thirdParties ??
@@ -117,8 +148,19 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
           const tpFolder = safeDirname(tp.name)
           const tpPath = `artifacts/${siteFolder}/third_party/${tpFolder}/policy.txt`
           const res = await window.scraper?.readArtifactText({ outDir, relativePath: tpPath })
+          const methodPath = `artifacts/${siteFolder}/third_party/${tpFolder}/policy.extraction.json`
+          const methodRes = await window.scraper?.readArtifactText({ outDir, relativePath: methodPath })
+          let method: string | null = null
+          if (methodRes?.ok && methodRes.data) {
+            try {
+              const parsed = JSON.parse(methodRes.data)
+              method = typeof parsed?.method === 'string' ? parsed.method : null
+            } catch {
+              method = null
+            }
+          }
           if (res?.ok && res.data) {
-            return { tp, text: res.data }
+            return { tp, text: res.data, method }
           }
           return null
         }),
@@ -126,14 +168,17 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
 
       const available: ExplorerThirdParty[] = []
       const textMap: Record<string, string> = {}
+      const methodMap: Record<string, string | null> = {}
       for (const entry of checks) {
         if (!entry) continue
         available.push(entry.tp)
         textMap[entry.tp.name] = entry.text
+        methodMap[entry.tp.name] = entry.method
       }
 
       setThirdPartyOptions(available)
       setThirdPartyTexts(textMap)
+      setThirdPartyMethods(methodMap)
       if (selectedThirdParty && textMap[selectedThirdParty]) {
         setThirdPartyPolicyText(textMap[selectedThirdParty])
       }
@@ -181,6 +226,33 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
 
   const siteWordCount = sitePolicyText ? sitePolicyText.trim().split(/\s+/).length : 0
   const thirdPartyWordCount = thirdPartyPolicyText ? thirdPartyPolicyText.trim().split(/\s+/).length : 0
+  const selectedSiteMethod = sitePolicyMethod ?? (selectedSite as any)?.extractionMethod ?? (selectedSite as any)?.extraction_method ?? null
+  const selectedThirdPartyOption = thirdPartyOptions.find((tp) => tp.name === selectedThirdParty) as any
+  const selectedThirdPartyMethod =
+    thirdPartyMethods[selectedThirdParty] ??
+    selectedThirdPartyOption?.extractionMethod ??
+    selectedThirdPartyOption?.extraction_method ??
+    null
+
+  const canSendToReasoning = Boolean(
+    selectedSite?.site &&
+      selectedThirdParty &&
+      sitePolicyText.trim() &&
+      thirdPartyPolicyText.trim() &&
+      onSendToReasoning,
+  )
+
+  const handleSendToReasoning = () => {
+    if (!onSendToReasoning || !canSendToReasoning || !selectedSite) return
+    onSendToReasoning({
+      firstPartySite: selectedSite.site,
+      thirdPartyName: selectedThirdParty,
+      firstPartyText: sitePolicyText,
+      thirdPartyText: thirdPartyPolicyText,
+      firstPartyExtractionMethod: selectedSiteMethod,
+      thirdPartyExtractionMethod: selectedThirdPartyMethod,
+    })
+  }
 
   if (!hasRun) {
     return (
@@ -246,6 +318,17 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--muted-text)]">
+          <button
+            className={`focusable rounded-full border px-3 py-1 ${
+              canSendToReasoning
+                ? 'border-[var(--color-danger)] text-white'
+                : 'border-[var(--border-soft)] text-[var(--muted-text)]'
+            }`}
+            disabled={!canSendToReasoning}
+            onClick={handleSendToReasoning}
+          >
+            Send pair to Reasoning
+          </button>
           <div className="flex items-center gap-2">
             <span>Find</span>
             <input
@@ -299,6 +382,11 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
               <span>{selectedSite?.site || '—'}</span>
               <span>{siteWordCount.toLocaleString()} words • {countMatches(sitePolicyText)} matches</span>
             </div>
+            {showExtractionMethod && (
+              <div className="mt-1 text-xs text-[var(--muted-text)]">
+                Extraction: {formatExtractionMethod(selectedSiteMethod)}
+              </div>
+            )}
             <div className={`consistency-text mt-3 max-h-[480px] overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-black/30 p-3 ${fontSizeClass} leading-relaxed text-[var(--muted-text)]`}>
               <div className="flex justify-end">
                 <button
@@ -318,6 +406,11 @@ export function ConsistencyCheckerView({ hasRun, sites, outDir }: ConsistencyChe
               <span>{selectedThirdParty || '—'}</span>
               <span>{thirdPartyWordCount.toLocaleString()} words • {countMatches(thirdPartyPolicyText)} matches</span>
             </div>
+            {showExtractionMethod && (
+              <div className="mt-1 text-xs text-[var(--muted-text)]">
+                Extraction: {formatExtractionMethod(selectedThirdPartyMethod)}
+              </div>
+            )}
             <div className={`consistency-text mt-3 max-h-[480px] overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-black/30 p-3 ${fontSizeClass} leading-relaxed text-[var(--muted-text)]`}>
               <div className="flex justify-end">
                 <button

@@ -6,7 +6,7 @@ import inspect
 from urllib.parse import urlparse
 from typing import Any, Optional
 
-from .text_extract import extract_main_text_from_html
+from .text_extract import extract_main_text_with_method
 from .utils.logging import warn
 
 @dataclass
@@ -19,6 +19,7 @@ class Crawl4AIResult:
     text: str | None
     network_requests: list[dict[str, Any]] | None
     error_message: str | None
+    text_extraction_method: str | None = None
 
 def _extract_network(result: Any) -> list[dict[str, Any]] | None:
     # Crawl4AI docs mention `result.network_requests` (v0.7.x).
@@ -210,6 +211,7 @@ class Crawl4AIClient:
                 raw_html=None,
                 cleaned_html=None,
                 text=None,
+                text_extraction_method=None,
                 network_requests=None,
                 error_message=str(e),
             )
@@ -230,13 +232,16 @@ class Crawl4AIClient:
             ]
 
         # Text extraction (job 2): Trafilatura-first from cleaned/raw HTML.
-        text = extract_main_text_from_html(cleaned_html or raw_html, source_url=url)
+        text, extraction_method = extract_main_text_with_method(cleaned_html or raw_html, source_url=url)
         if not text or not text.strip():
             # Fallback to Crawl4AI markdown fields if extraction yields nothing.
             text = _extract_text(res)
+            if text and text.strip():
+                extraction_method = "fallback"
         if not text or not text.strip():
             warn(f"Text extraction returned empty output for {url}")
             text = None
+            extraction_method = None
 
         return Crawl4AIResult(
             url=getattr(res, "url", url) or url,
@@ -245,6 +250,7 @@ class Crawl4AIClient:
             raw_html=raw_html,
             cleaned_html=cleaned_html,
             text=text,
+            text_extraction_method=extraction_method,
             network_requests=network_requests,
             error_message=error_message,
         )

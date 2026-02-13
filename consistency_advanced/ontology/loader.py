@@ -76,10 +76,15 @@ def load_vocab(path: str | Path) -> Vocabulary:
 def _to_terms(items: Iterable[dict]) -> List[VocabTerm]:
     terms: List[VocabTerm] = []
     for item in items:
+        uri = item.get("uri") or item.get("id")
+        if not uri:
+            # Skip malformed terms but keep loader tolerant of mixed vocab formats.
+            continue
+        label = item.get("label") or item.get("preferred_label") or str(uri).split(":", 1)[-1]
         terms.append(
             VocabTerm(
-                uri=item["uri"],
-                label=item.get("label") or item.get("preferred_label", ""),
+                uri=uri,
+                label=label,
                 parent=item.get("parent") or item.get("parent_id"),
                 alt_labels=tuple(item.get("alt_labels", [])),
             )

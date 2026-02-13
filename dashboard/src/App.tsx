@@ -5,11 +5,13 @@ import { LauncherView } from './components/launcher/LauncherView'
 import { ResultsView } from './components/results/ResultsView'
 import { ExplorerView } from './components/explorer/ExplorerView'
 import { ConsistencyCheckerView } from './components/consistency/ConsistencyCheckerView'
+import { ReasoningView } from './components/reasoning/ReasoningView'
 import { AnalyticsView } from './components/analytics/AnalyticsView'
 import { DatabaseView } from './components/database/DatabaseView'
 import { SettingsView } from './components/settings/SettingsView'
 import { NavId, Theme } from './types'
 import { computeResults } from './utils/results'
+import type { ReasoningSelection } from './components/reasoning/ReasoningView'
 
 function formatDuration(ms: number) {
   if (!Number.isFinite(ms) || ms <= 0) return '0s'
@@ -24,6 +26,15 @@ function formatDuration(ms: number) {
 
 function App() {
   const [theme, setTheme] = useState<Theme>('dark')
+  const [showExtractionMethod, setShowExtractionMethod] = useState<boolean>(() => {
+    try {
+      const raw = localStorage.getItem('settings.showExtractionMethod')
+      if (raw === null) return true
+      return raw !== 'false'
+    } catch {
+      return true
+    }
+  })
   const [activeNav, setActiveNav] = useState<NavId>('launcher')
   const [topN, setTopN] = useState('1000')
   const [hasRun, setHasRun] = useState(false)
@@ -47,6 +58,7 @@ function App() {
   const [runsRoot] = useState('outputs')
   const [runRecords, setRunRecords] = useState<any[]>([])
   const [folderBytes, setFolderBytes] = useState<number | null>(null)
+  const [reasoningSelection, setReasoningSelection] = useState<ReasoningSelection | null>(null)
 
   const siteSteps = ['Home fetch', 'Policy discovery', '3P extraction', '3P policy fetch']
   const siteStageToIndex: Record<string, number> = {
@@ -59,6 +71,14 @@ function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('settings.showExtractionMethod', String(showExtractionMethod))
+    } catch {
+      // ignore storage failures
+    }
+  }, [showExtractionMethod])
 
   const resultsMetrics = useMemo(() => computeResults(hasRun, progress), [hasRun, progress])
   const postCruxCount = useCrux ? (stateData?.total_sites ?? summaryData?.total_sites ?? null) : null
@@ -360,6 +380,7 @@ function App() {
     results: 'Results',
     explorer: 'Explorer',
     consistency: 'Consistency checker',
+    reasoning: 'Reasoning',
     analytics: 'Analytics',
     database: 'Database',
     settings: 'Settings',
@@ -370,6 +391,7 @@ function App() {
     results: 'Outcome overview of the latest scrape.',
     explorer: 'Browse scraped sites and their policy links.',
     consistency: 'Compare first‑party and third‑party policy texts.',
+    reasoning: 'Run advanced consistency pipeline steps on a selected policy pair.',
     analytics: 'Operational metrics and crawl performance.',
     database: 'Artifact storage and dataset exports.',
     settings: 'Theme and default crawl preferences.',
@@ -422,10 +444,30 @@ function App() {
           />
         )}
         {activeNav === 'explorer' && (
-          <ExplorerView hasRun={hasRun} progress={progress} sites={explorerData || undefined} />
+          <ExplorerView
+            hasRun={hasRun}
+            progress={progress}
+            sites={explorerData || undefined}
+            showExtractionMethod={showExtractionMethod}
+          />
         )}
         {activeNav === 'consistency' && (
-          <ConsistencyCheckerView hasRun={hasRun} sites={explorerData || undefined} outDir={outDir} />
+          <ConsistencyCheckerView
+            hasRun={hasRun}
+            sites={explorerData || undefined}
+            outDir={outDir}
+            showExtractionMethod={showExtractionMethod}
+            onSendToReasoning={(selection) => {
+              setReasoningSelection(selection)
+              setActiveNav('reasoning')
+            }}
+          />
+        )}
+        {activeNav === 'reasoning' && (
+          <ReasoningView
+            selection={reasoningSelection}
+            onGoToConsistency={() => setActiveNav('consistency')}
+          />
         )}
         {activeNav === 'analytics' && <AnalyticsView summary={summaryData} state={stateData} />}
         {activeNav === 'database' && (
@@ -445,7 +487,14 @@ function App() {
             folderBytes={folderBytes}
           />
         )}
-        {activeNav === 'settings' && <SettingsView theme={theme} onThemeChange={setTheme} />}
+        {activeNav === 'settings' && (
+          <SettingsView
+            theme={theme}
+            onThemeChange={setTheme}
+            showExtractionMethod={showExtractionMethod}
+            onToggleShowExtractionMethod={setShowExtractionMethod}
+          />
+        )}
       </PageShell>
     </div>
   )

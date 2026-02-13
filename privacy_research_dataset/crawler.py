@@ -7,7 +7,7 @@ from dataclasses import asdict
 from datetime import datetime
 import time
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Awaitable, Callable
 from urllib.parse import urlparse, urlunparse
 
 import aiohttp
@@ -481,6 +481,7 @@ async def _fetch_best_policy(
             fetch_success=res.success,
             status_code=res.status_code,
             error_message=res.error_message,
+            text_extraction_method=res.text_extraction_method,
         )
         text = (res.text or "").strip()
         rec["text_len"] = len(text)
@@ -572,7 +573,7 @@ async def _fetch_best_policy(
         ],
         "tried": tried,
         "chosen": (None if chosen is None else {k: chosen[k] for k in chosen.keys() if k in (
-            "url","anchor_text","score","source","candidate_etld1","is_same_site","status_code","likeliness_score","text_len"
+            "url","anchor_text","score","source","candidate_etld1","is_same_site","status_code","likeliness_score","text_len","text_extraction_method"
         )}) ,
         "_chosen_full": chosen,  # internal (includes text/html)
     }
@@ -591,6 +592,7 @@ async def process_site(
     run_id: str | None = None,
     stage_callback: Callable[[str], None] | None = None,
     exclude_same_entity: bool = False,
+    third_party_policy_fetcher: Callable[[str], Awaitable[Crawl4AIResult]] | None = None,
 ) -> dict[str, Any]:
     """
     Process a single website:
@@ -670,6 +672,7 @@ async def process_site(
                 "text": home_text,
                 "cleaned_html": home.cleaned_html,
                 "raw_html": home.raw_html,
+                "text_extraction_method": home.text_extraction_method or "fallback",
             }
     first_party_policy = None
     if chosen_full:
@@ -681,10 +684,18 @@ async def process_site(
             "likeliness_score": chosen_full.get("likeliness_score"),
             "text_len": len(cleaned_text),
             "text_len_raw": chosen_full.get("text_len"),
+            "extraction_method": chosen_full.get("text_extraction_method") or "fallback",
         }
         _write_text(site_art_dir / "policy.url.txt", chosen_full.get("url"))
         _write_text(site_art_dir / "policy.raw.txt", raw_text)
         _write_text(site_art_dir / "policy.txt", cleaned_text)
+        _write_json(
+            site_art_dir / "policy.extraction.json",
+            {
+                "method": first_party_policy["extraction_method"],
+                "source_url": chosen_full.get("url"),
+            },
+        )
         _write_text(site_art_dir / "policy.cleaned.html", chosen_full.get("cleaned_html"))
         if chosen_full.get("raw_html"):
             _write_text(site_art_dir / "policy.raw.html", chosen_full.get("raw_html"))
@@ -786,12 +797,23 @@ async def process_site(
                 continue
             tp_dir = site_art_dir / "third_party" / _safe_dirname(rec["third_party_etld1"])
             tp_dir.mkdir(parents=True, exist_ok=True)
-            res = await client.fetch(purl, capture_network=False, remove_overlays=True, magic=False)
+            if third_party_policy_fetcher is not None:
+                res = await third_party_policy_fetcher(purl)
+            else:
+                res = await client.fetch(purl, capture_network=False, remove_overlays=True, magic=False)
             tp_text_raw = (res.text or "").strip()
             tp_text = _clean_policy_text(tp_text_raw)
             _write_text(tp_dir / "policy.url.txt", purl)
             _write_text(tp_dir / "policy.raw.txt", tp_text_raw)
             _write_text(tp_dir / "policy.txt", tp_text)
+            tp_method = res.text_extraction_method or "fallback"
+            _write_json(
+                tp_dir / "policy.extraction.json",
+                {
+                    "method": tp_method,
+                    "source_url": purl,
+                },
+            )
             third_party_policy_fetches.append({
                 "third_party_etld1": rec["third_party_etld1"],
                 "policy_url": purl,
@@ -799,9 +821,20 @@ async def process_site(
                 "status_code": res.status_code,
                 "text_len": len(tp_text),
                 "text_len_raw": len(tp_text_raw),
+                "extraction_method": tp_method,
                 "error_message": res.error_message,
             })
     third_party_policy_fetch_ms = int((time.perf_counter() - t_tp_policy) * 1000)
+
+    fetch_method_by_tp = {
+        str(item.get("third_party_etld1")): item.get("extraction_method")
+        for item in third_party_policy_fetches
+        if item.get("third_party_etld1")
+    }
+    if fetch_method_by_tp:
+        for tp in third_party_records:
+            et = str(tp.get("third_party_etld1") or "")
+            tp["policy_extraction_method"] = fetch_method_by_tp.get(et)
 
     # 5) Final record
     status = "ok" if first_party_policy else "policy_not_found"

@@ -13,7 +13,7 @@ from typing import Any, Iterable
 
 import aiohttp
 
-from .crawl4ai_client import Crawl4AIClient
+from .crawl4ai_client import Crawl4AIClient, Crawl4AIResult
 from .crawler import process_site
 from .tracker_radar import TrackerRadarIndex
 from .trackerdb import TrackerDbIndex
@@ -487,6 +487,65 @@ async def _run(args: argparse.Namespace) -> None:
         timezone_id=args.timezone_id,
         page_timeout_ms=args.page_timeout_ms,
     ) as client:
+        tp_policy_cache: dict[str, Crawl4AIResult] = {}
+        tp_policy_inflight: dict[str, asyncio.Future[Crawl4AIResult]] = {}
+        tp_policy_cache_lock = asyncio.Lock()
+
+        async def fetch_third_party_policy_cached(policy_url: str) -> Crawl4AIResult:
+            owner = False
+            async with tp_policy_cache_lock:
+                cached = tp_policy_cache.get(policy_url)
+                if cached is not None:
+                    return cached
+                fut = tp_policy_inflight.get(policy_url)
+                if fut is None:
+                    fut = asyncio.get_running_loop().create_future()
+                    tp_policy_inflight[policy_url] = fut
+                    owner = True
+
+            if owner:
+                try:
+                    result = await client.fetch(
+                        policy_url,
+                        capture_network=False,
+                        remove_overlays=True,
+                        magic=False,
+                    )
+                except Exception as e:
+                    result = Crawl4AIResult(
+                        url=policy_url,
+                        success=False,
+                        status_code=None,
+                        raw_html=None,
+                        cleaned_html=None,
+                        text=None,
+                        network_requests=None,
+                        error_message=str(e),
+                        text_extraction_method=None,
+                    )
+
+                async with tp_policy_cache_lock:
+                    tp_policy_cache[policy_url] = result
+                    inflight = tp_policy_inflight.pop(policy_url, None)
+                    if inflight is not None and not inflight.done():
+                        inflight.set_result(result)
+                return result
+
+            async with tp_policy_cache_lock:
+                wait_fut = tp_policy_inflight.get(policy_url)
+                cached = tp_policy_cache.get(policy_url)
+            if cached is not None:
+                return cached
+            if wait_fut is not None:
+                return await wait_fut
+
+            # Fallback safety path (should rarely happen under race conditions).
+            return await client.fetch(
+                policy_url,
+                capture_network=False,
+                remove_overlays=True,
+                magic=False,
+            )
 
         async def worker(rec: dict[str, Any]) -> None:
             async with sem:
@@ -513,6 +572,7 @@ async def _run(args: argparse.Namespace) -> None:
                         third_party_engine=args.third_party_engine,
                         run_id=run_id,
                         exclude_same_entity=bool(args.exclude_same_entity),
+                        third_party_policy_fetcher=fetch_third_party_policy_cached,
                         stage_callback=lambda stage: emit_event({
                             "type": "site_stage",
                             "run_id": run_id,

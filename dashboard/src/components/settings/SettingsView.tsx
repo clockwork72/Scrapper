@@ -3,9 +3,16 @@ import { Theme } from '../../types'
 type SettingsViewProps = {
   theme: Theme
   onThemeChange: (theme: Theme) => void
+  showExtractionMethod: boolean
+  onToggleShowExtractionMethod: (value: boolean) => void
 }
 
-export function SettingsView({ theme, onThemeChange }: SettingsViewProps) {
+export function SettingsView({
+  theme,
+  onThemeChange,
+  showExtractionMethod,
+  onToggleShowExtractionMethod,
+}: SettingsViewProps) {
   return (
     <>
       <section className="card rounded-2xl p-6">
@@ -53,13 +60,19 @@ export function SettingsView({ theme, onThemeChange }: SettingsViewProps) {
           <h3 className="text-lg font-semibold">Defaults</h3>
         </div>
         <div className="mt-4 space-y-2 text-sm">
+          
           <div className="flex items-center justify-between rounded-xl border border-[var(--border-soft)] bg-black/20 px-4 py-3">
-            <span className="text-xs text-[var(--muted-text)]">Prefilter websites</span>
-            <span className="text-xs">Enabled</span>
-          </div>
-          <div className="flex items-center justify-between rounded-xl border border-[var(--border-soft)] bg-black/20 px-4 py-3">
-            <span className="text-xs text-[var(--muted-text)]">Engine</span>
-            <span className="text-xs">crawl4ai</span>
+            <span className="text-xs text-[var(--muted-text)]">Show extraction method labels</span>
+            <button
+              className={`focusable rounded-full border px-3 py-1 text-xs ${
+                showExtractionMethod
+                  ? 'border-[var(--color-danger)] text-white'
+                  : 'border-[var(--border-soft)] text-[var(--muted-text)]'
+              }`}
+              onClick={() => onToggleShowExtractionMethod(!showExtractionMethod)}
+            >
+              {showExtractionMethod ? 'On' : 'Off'}
+            </button>
           </div>
         </div>
       </section>
